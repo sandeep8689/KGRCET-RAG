@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import sys
 from typing import Any, Literal
 
@@ -15,12 +16,20 @@ from backend.rag_service import ask_rag, get_resources  # noqa: E402
 app = FastAPI(
     title="KGRCET RAG Assistant API",
     description="Answers KGRCET questions using the existing ChromaDB index and Groq.",
-    version="1.1.0",
+    version="1.2.0",
 )
 
+allowed_origins = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv(
+        "CORS_ALLOW_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    ).split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,7 +60,7 @@ def health():
 @app.get("/ready")
 def ready():
     try:
-        collection, _, _ = get_resources()
+        collection, _ = get_resources()
         return {
             "status": "ready",
             "collection": collection.name,
@@ -73,5 +82,5 @@ def ask(request: AskRequest):
         print(f"RAG request failed: {type(exc).__name__}: {exc}")
         raise HTTPException(
             status_code=500,
-            detail="The assistant could not answer right now. Check the backend terminal and .env configuration.",
+            detail="The assistant could not answer right now. Check backend logs and environment configuration.",
         ) from exc

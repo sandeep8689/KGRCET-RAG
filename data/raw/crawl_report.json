@@ -1,0 +1,2003 @@
+{
+  "started_at": "2026-10-16T14:26:07.536159",
+  "academic_year_filter": "2026-27",
+  "examination_content_excluded": true,
+  "successful": [
+    {
+      "url": "https://kgr.ac.in/leadership/",
+      "characters": 1861
+    },
+    {
+      "url": "https://kgr.ac.in/",
+      "characters": 17641
+    },
+    {
+      "url": "https://kgr.ac.in/syllabus/",
+      "characters": 1549
+    },
+    {
+      "url": "https://kgr.ac.in/academic-calenders/",
+      "characters": 989
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/ceo/",
+      "characters": 2081
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-pos/",
+      "characters": 5124
+    },
+    {
+      "url": "https://kgr.ac.in/programs/b-tech-in-artificial-intelligence-and-machine-learning/",
+      "characters": 4398
+    },
+    {
+      "url": "https://kgr.ac.in/admissions/",
+      "characters": 4109
+    },
+    {
+      "url": "https://kgr.ac.in/hostels/",
+      "characters": 1471
+    },
+    {
+      "url": "https://kgr.ac.in/academic-regulations/",
+      "characters": 918
+    },
+    {
+      "url": "https://kgr.ac.in/programs/b-tech-in-computer-science-and-engineering/cse-hod-2/",
+      "characters": 3586
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/principal/",
+      "characters": 2303
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/director/",
+      "characters": 2053
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/chairman/",
+      "characters": 1684
+    },
+    {
+      "url": "https://kgr.ac.in/integrated-btech-admissions/",
+      "characters": 2847
+    },
+    {
+      "url": "https://kgr.ac.in/iqac/",
+      "characters": 14980
+    },
+    {
+      "url": "https://kgr.ac.in/library/",
+      "characters": 9856
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-contact/",
+      "characters": 861
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-newsletters/",
+      "characters": 866
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-achievements/",
+      "characters": 834
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-committees/",
+      "characters": 893
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-collaborations/",
+      "characters": 794
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-research/",
+      "characters": 2955
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-faculty/",
+      "characters": 834
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-pos/",
+      "characters": 2121
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-laboratories/",
+      "characters": 791
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-contact/",
+      "characters": 868
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-newsletters/",
+      "characters": 987
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-activities/",
+      "characters": 5787
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-achievements/",
+      "characters": 862
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-collaborations/",
+      "characters": 802
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-research/",
+      "characters": 4995
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-committees/",
+      "characters": 895
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-laboratories/",
+      "characters": 989
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-pos/",
+      "characters": 4422
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-faculty/",
+      "characters": 817
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-contact/",
+      "characters": 851
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-newsletters/",
+      "characters": 1097
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-achievements/",
+      "characters": 820
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-activities/",
+      "characters": 4769
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-collaborations/",
+      "characters": 803
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-committees/",
+      "characters": 901
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-research/",
+      "characters": 1915
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-laboratories/",
+      "characters": 800
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-faculty/",
+      "characters": 794
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-pos/",
+      "characters": 4475
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-contact/",
+      "characters": 870
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-newsletters/",
+      "characters": 1030
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-achievements/",
+      "characters": 842
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-activities/",
+      "characters": 5120
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-collaborations/",
+      "characters": 794
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-committees/",
+      "characters": 892
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-research/",
+      "characters": 2555
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-laboratory/",
+      "characters": 813
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-faculty/",
+      "characters": 825
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-pos/",
+      "characters": 5591
+    },
+    {
+      "url": "https://kgr.ac.in/programs/b-tech-in-electronics-and-communication-engineering/",
+      "characters": 3607
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-contact/",
+      "characters": 878
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-newsletters/",
+      "characters": 992
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-achievements/",
+      "characters": 853
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-activities/",
+      "characters": 5288
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-collaborations/",
+      "characters": 805
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-committees/",
+      "characters": 902
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-research/",
+      "characters": 3663
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-laboratories/",
+      "characters": 1270
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-faculty/",
+      "characters": 800
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-pos/",
+      "characters": 4578
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-contact/",
+      "characters": 868
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-newsletters/",
+      "characters": 870
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-achievements/",
+      "characters": 851
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-activities/",
+      "characters": 5155
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-collaborations/",
+      "characters": 811
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-research/",
+      "characters": 928
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-laboratories/",
+      "characters": 1085
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-faculty/",
+      "characters": 828
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-contact/",
+      "characters": 872
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-newsletters/",
+      "characters": 814
+    },
+    {
+      "url": "https://kgr.ac.in/placements/",
+      "characters": 2986
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-activities/",
+      "characters": 5542
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-collaborations/",
+      "characters": 818
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-committees/",
+      "characters": 916
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-research/",
+      "characters": 909
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-laboratories/",
+      "characters": 1273
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-faculty/",
+      "characters": 817
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-pos/",
+      "characters": 4670
+    },
+    {
+      "url": "https://kgr.ac.in/naac/",
+      "characters": 12635
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/dean-research/",
+      "characters": 1263
+    },
+    {
+      "url": "https://kgr.ac.in/student-information/",
+      "characters": 990
+    },
+    {
+      "url": "https://kgr.ac.in/blog/",
+      "characters": 5126
+    },
+    {
+      "url": "https://kgr.ac.in/statutory-bodies/",
+      "characters": 2892
+    },
+    {
+      "url": "https://kgr.ac.in/about-us/",
+      "characters": 3865
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/committees/",
+      "characters": 2769
+    },
+    {
+      "url": "https://kgr.ac.in/alumni/",
+      "characters": 1308
+    },
+    {
+      "url": "https://kgr.ac.in/contact-us/",
+      "characters": 1030
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/student-council/",
+      "characters": 1725
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/department-of-student-affairs/",
+      "characters": 2003
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/annual-events/",
+      "characters": 5340
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/clubs/",
+      "characters": 2827
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/infrastructure/",
+      "characters": 5227
+    },
+    {
+      "url": "https://kgr.ac.in/campus-life/",
+      "characters": 2849
+    },
+    {
+      "url": "https://kgr.ac.in/placements/industry-collaborations/",
+      "characters": 1345
+    },
+    {
+      "url": "https://kgr.ac.in/placements/recruiters/",
+      "characters": 1125
+    },
+    {
+      "url": "https://kgr.ac.in/placements/statistics/",
+      "characters": 1227
+    },
+    {
+      "url": "https://kgr.ac.in/coe/center-for-engineering-education-development/",
+      "characters": 9385
+    },
+    {
+      "url": "https://kgr.ac.in/coe/center-for-research-innovation-development/",
+      "characters": 6396
+    },
+    {
+      "url": "https://kgr.ac.in/coe/center-for-innovation-social-transformation/",
+      "characters": 5648
+    },
+    {
+      "url": "https://kgr.ac.in/coe/",
+      "characters": 2384
+    },
+    {
+      "url": "https://kgr.ac.in/programs/top-mba-college-hyderabad/",
+      "characters": 5554
+    },
+    {
+      "url": "https://kgr.ac.in/programs/b-tech-civil-engineering-course-hyderabad/",
+      "characters": 3552
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mechanical-engineering/",
+      "characters": 6668
+    },
+    {
+      "url": "https://kgr.ac.in/programs/b-tech-cse-data-science/",
+      "characters": 4360
+    },
+    {
+      "url": "https://kgr.ac.in/programs/b-tech-in-computer-science-and-engineering/",
+      "characters": 4489
+    },
+    {
+      "url": "https://kgr.ac.in/programs/",
+      "characters": 2504
+    },
+    {
+      "url": "https://kgr.ac.in/about-us/awards-recognitions/",
+      "characters": 4985
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cse-achievements/",
+      "characters": 868
+    },
+    {
+      "url": "https://kgr.ac.in/institution-industry-celliic/",
+      "characters": 2893
+    },
+    {
+      "url": "https://kgr.ac.in/campus-safety-measures/",
+      "characters": 1385
+    },
+    {
+      "url": "https://kgr.ac.in/divyangjans/",
+      "characters": 1090
+    },
+    {
+      "url": "https://kgr.ac.in/women-empowerment/",
+      "characters": 2556
+    },
+    {
+      "url": "https://kgr.ac.in/unnat-bharat-abhiyan/",
+      "characters": 3589
+    },
+    {
+      "url": "https://kgr.ac.in/humanities-sciences/",
+      "characters": 28007
+    },
+    {
+      "url": "https://kgr.ac.in/national-service-scheme-nss/",
+      "characters": 7716
+    },
+    {
+      "url": "https://kgr.ac.in/policies-and-guidelines/",
+      "characters": 3417
+    },
+    {
+      "url": "https://kgr.ac.in/sops/",
+      "characters": 887
+    },
+    {
+      "url": "https://kgr.ac.in/sports-games/",
+      "characters": 2700
+    },
+    {
+      "url": "https://kgr.ac.in/mandatory-enclosure/",
+      "characters": 678
+    },
+    {
+      "url": "https://kgr.ac.in/ariia/",
+      "characters": 688
+    },
+    {
+      "url": "https://kgr.ac.in/nba/",
+      "characters": 2455
+    },
+    {
+      "url": "https://kgr.ac.in/aicte/",
+      "characters": 1678
+    },
+    {
+      "url": "https://kgr.ac.in/placements/placement-team/",
+      "characters": 1095
+    },
+    {
+      "url": "https://kgr.ac.in/placements/trainings/",
+      "characters": 1162
+    },
+    {
+      "url": "https://kgr.ac.in/computer-science-and-engineering-m-tech/",
+      "characters": 909
+    },
+    {
+      "url": "https://kgr.ac.in/ece-m-tech/",
+      "characters": 1485
+    },
+    {
+      "url": "https://kgr.ac.in/nirf/",
+      "characters": 1375
+    },
+    {
+      "url": "https://kgr.ac.in/news-letter/",
+      "characters": 879
+    },
+    {
+      "url": "https://kgr.ac.in/audited-statements/",
+      "characters": 1271
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-activities/",
+      "characters": 1529
+    },
+    {
+      "url": "https://kgr.ac.in/privacy-policy-2/",
+      "characters": 628
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mba-hod/",
+      "characters": 4145
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-hod/",
+      "characters": 6457
+    },
+    {
+      "url": "https://kgr.ac.in/programs/mech-hod/",
+      "characters": 1577
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ce-hod/",
+      "characters": 4824
+    },
+    {
+      "url": "https://kgr.ac.in/programs/cseds-hod/",
+      "characters": 2910
+    },
+    {
+      "url": "https://kgr.ac.in/1-4-1-1-4-2-stake-holder-feedback-analysis/",
+      "characters": 699
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-faculty/ece-hod/",
+      "characters": 4409
+    },
+    {
+      "url": "https://kgr.ac.in/programs/ece-other-info/",
+      "characters": 628
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/prof-m-n-narsaiah/",
+      "characters": 1272
+    },
+    {
+      "url": "https://kgr.ac.in/leadership/prof-k-uma-shankar/",
+      "characters": 1265
+    },
+    {
+      "url": "https://kgr.ac.in/term-conditions/",
+      "characters": 1961
+    },
+    {
+      "url": "https://kgr.ac.in/dsa-orientation-student-clubs-membership-drive-for-first-year-students/",
+      "characters": 3391
+    },
+    {
+      "url": "https://kgr.ac.in/future-potential-in-the-field-of-aiml/",
+      "characters": 2971
+    },
+    {
+      "url": "https://kgr.ac.in/1-industrial-visit-held-on-20th-february-2024/",
+      "characters": 1303
+    },
+    {
+      "url": "https://kgr.ac.in/industrial-visit-to-jmc-projects-india-ltd-pbelcity/",
+      "characters": 1956
+    },
+    {
+      "url": "https://kgr.ac.in/1-industrial-visit-held-on-16th-february-2024/",
+      "characters": 1651
+    },
+    {
+      "url": "https://kgr.ac.in/strategic-advancement-in-cloud-computing-and-devops-integration/",
+      "characters": 2944
+    },
+    {
+      "url": "https://kgr.ac.in/strategic-partnerships-and-institutional-collaborative-frameworks/",
+      "characters": 2664
+    },
+    {
+      "url": "https://kgr.ac.in/modern-methodologies-in-software-engineering-and-systems-design/",
+      "characters": 2201
+    },
+    {
+      "url": "https://kgr.ac.in/recognition-in-multi-disciplinary-industry-problem-solving/",
+      "characters": 3134
+    },
+    {
+      "url": "https://kgr.ac.in/excellence-in-competitive-programming-and-algorithmic-logic/",
+      "characters": 3367
+    },
+    {
+      "url": "https://kgr.ac.in/industrial-exposure-to-sustainable-waste-management-systems/",
+      "characters": 2039
+    },
+    {
+      "url": "https://kgr.ac.in/industry-problem-solving-and-experiential-learning-initiatives/",
+      "characters": 3016
+    },
+    {
+      "url": "https://kgr.ac.in/hands-on-experiential-learning-and-hardware-interfacing/",
+      "characters": 3069
+    },
+    {
+      "url": "https://kgr.ac.in/training-program-on-entrepreneurship-and-industrial-literacy/",
+      "characters": 2780
+    },
+    {
+      "url": "https://kgr.ac.in/advanced-java-programming-and-gui-development-workshop/",
+      "characters": 2870
+    },
+    {
+      "url": "https://kgr.ac.in/cisco-certification-course-in-association-with-niit-foundation/",
+      "characters": 1699
+    },
+    {
+      "url": "https://kgr.ac.in/guests-for-csi-student-branch-chapter-inaugural-ceremony/",
+      "characters": 2916
+    },
+    {
+      "url": "https://kgr.ac.in/memorandum-of-understanding-with-university-of-emerging-technology/",
+      "characters": 2425
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-ai-and-cyber-awareness/",
+      "characters": 2757
+    },
+    {
+      "url": "https://kgr.ac.in/poster-presentation/",
+      "characters": 1762
+    },
+    {
+      "url": "https://kgr.ac.in/hands-on-workshop-on-blockchain-technology/",
+      "characters": 3491
+    },
+    {
+      "url": "https://kgr.ac.in/hands-on-workshop-on-prompt-engineering-freelancing/",
+      "characters": 3478
+    },
+    {
+      "url": "https://kgr.ac.in/participation-in-ewb-india-all-india-chapter-event/",
+      "characters": 3274
+    },
+    {
+      "url": "https://kgr.ac.in/iucee-nep-course-quantum-computing/",
+      "characters": 3361
+    },
+    {
+      "url": "https://kgr.ac.in/district-level-sports-meet-saroor-nagar/",
+      "characters": 3103
+    },
+    {
+      "url": "https://kgr.ac.in/app-and-web-development-club-membership-drive-2025/",
+      "characters": 2335
+    },
+    {
+      "url": "https://kgr.ac.in/3-day-hands-on-workshop-on-design-craft-html-figma-hands-on/",
+      "characters": 1872
+    },
+    {
+      "url": "https://kgr.ac.in/freshmen-orientation-programme-2025-transforming-ideas-into-digital-reality/",
+      "characters": 2825
+    },
+    {
+      "url": "https://kgr.ac.in/membership-drive/",
+      "characters": 3181
+    },
+    {
+      "url": "https://kgr.ac.in/3-day-workshop-on-programming-with-solidity/",
+      "characters": 2276
+    },
+    {
+      "url": "https://kgr.ac.in/3-day-workshop-on-fundaments-of-blockchain/",
+      "characters": 2281
+    },
+    {
+      "url": "https://kgr.ac.in/session-on-resume-building-and-linkedin-optimization/",
+      "characters": 2319
+    },
+    {
+      "url": "https://kgr.ac.in/snist-open-powerlifting-competition-2025/",
+      "characters": 1992
+    },
+    {
+      "url": "https://kgr.ac.in/a-career-guidance-session/",
+      "characters": 2740
+    },
+    {
+      "url": "https://kgr.ac.in/an-industrial-visit-to-t-hub/",
+      "characters": 2163
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-4-years-of-engineering-the-way-ahead/",
+      "characters": 2214
+    },
+    {
+      "url": "https://kgr.ac.in/ai-robotics-workshop/",
+      "characters": 2793
+    },
+    {
+      "url": "https://kgr.ac.in/intinta-innovation-program/",
+      "characters": 2762
+    },
+    {
+      "url": "https://kgr.ac.in/a-two-days-workshop-on-a-gateway-to-your-bright-future-in-the-it-industry-was-organized-on-3rd-4th-april-2024/",
+      "characters": 2155
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-introduction-to-data-structure-session/",
+      "characters": 2859
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-tackling-biomedical-and-radioactire-wastes/",
+      "characters": 3914
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-modern-surveying-methods-and-their-uses-held-on-12-june-2025/",
+      "characters": 1776
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-fundamentals-of-electronic-devices-and-circuits/",
+      "characters": 1503
+    },
+    {
+      "url": "https://kgr.ac.in/robotics-in-acadamics-workshop-was-conducted-on-11-10-2025/",
+      "characters": 1282
+    },
+    {
+      "url": "https://kgr.ac.in/a-two-day-guest-lecture-programming-for-problem-solving/",
+      "characters": 1036
+    },
+    {
+      "url": "https://kgr.ac.in/ibm-skills-build-orientation-program-of-2029/",
+      "characters": 1000
+    },
+    {
+      "url": "https://kgr.ac.in/summary-report/",
+      "characters": 1317
+    },
+    {
+      "url": "https://kgr.ac.in/student-achievements/",
+      "characters": 890
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-discrete-mathematics/",
+      "characters": 1292
+    },
+    {
+      "url": "https://kgr.ac.in/industrial-visit-to-jmc-projects-india-ltd-viva-city-kondapur/",
+      "characters": 2154
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-computer-organization-and-architecture/",
+      "characters": 1421
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-design-analysis-and-algorithms/",
+      "characters": 1343
+    },
+    {
+      "url": "https://kgr.ac.in/activities-conducted-to-students/",
+      "characters": 1205
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-data-analytics/",
+      "characters": 2664
+    },
+    {
+      "url": "https://kgr.ac.in/faculty-achievements/",
+      "characters": 1727
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-software-engineering-2/",
+      "characters": 2058
+    },
+    {
+      "url": "https://kgr.ac.in/three-days-workshop-on-total-station/",
+      "characters": 3091
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-design-and-analysis-of-algori-thms/",
+      "characters": 4032
+    },
+    {
+      "url": "https://kgr.ac.in/certificate-course-on-autocad/",
+      "characters": 1974
+    },
+    {
+      "url": "https://kgr.ac.in/one-day-cad-hackathon-cadathon/",
+      "characters": 1903
+    },
+    {
+      "url": "https://kgr.ac.in/a-one-day-workshop-on-emerging-technologies/",
+      "characters": 1439
+    },
+    {
+      "url": "https://kgr.ac.in/hackathon-on-cist/",
+      "characters": 960
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-building-information-modelling-using-revit/",
+      "characters": 1998
+    },
+    {
+      "url": "https://kgr.ac.in/an-expert-lecture-on-ipr-intellectual-property-rights/",
+      "characters": 1079
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-career-opportunities-for-civil-engineers/",
+      "characters": 1883
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-data-interpretation-and-critical-reasoning/",
+      "characters": 1091
+    },
+    {
+      "url": "https://kgr.ac.in/students-participation-in-project-expo-outside-of-the-college/",
+      "characters": 1788
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-data-science-vs-machine-learning/",
+      "characters": 1253
+    },
+    {
+      "url": "https://kgr.ac.in/students-participated-in-iit-madras-tech-fest-cea-2023/",
+      "characters": 1525
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-emerging-technologies-in-industry/",
+      "characters": 1202
+    },
+    {
+      "url": "https://kgr.ac.in/certification-course-on-advanced-surveying-with-total-station-dgps/",
+      "characters": 2260
+    },
+    {
+      "url": "https://kgr.ac.in/students-participated-in-national-level-technical-symposium/",
+      "characters": 1120
+    },
+    {
+      "url": "https://kgr.ac.in/one-week-internship-cum-certification-course-on-full-stack-with-python-organized-by-data-science-club-and-in-association-with-swecha-foundation/",
+      "characters": 1264
+    },
+    {
+      "url": "https://kgr.ac.in/one-day-industry-guest-lecture-on-entrepreneurship-and-the-means-to-look-at/",
+      "characters": 1170
+    },
+    {
+      "url": "https://kgr.ac.in/completion-of-summer-internship/",
+      "characters": 2413
+    },
+    {
+      "url": "https://kgr.ac.in/one-week-activities-in-runup-to-world-environment-day/",
+      "characters": 1835
+    },
+    {
+      "url": "https://kgr.ac.in/one-day-workshop-on-wellbeing-out-of-waste-a-step-towards-circular-economy/",
+      "characters": 2153
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-operating-system-2/",
+      "characters": 1646
+    },
+    {
+      "url": "https://kgr.ac.in/a-three-days-workshop-on-iot-using-raspberry-pi/",
+      "characters": 5102
+    },
+    {
+      "url": "https://kgr.ac.in/project-expo-students-showcase-innovative-projects-in-department-of-civil-engineering/",
+      "characters": 2515
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-machine-learning-2/",
+      "characters": 3220
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-compiler-design/",
+      "characters": 1454
+    },
+    {
+      "url": "https://kgr.ac.in/one-day-visit-to-igbc-indian-green-building-council-property-show/",
+      "characters": 1884
+    },
+    {
+      "url": "https://kgr.ac.in/an-expert-lecture-on-oops-through-java/",
+      "characters": 1094
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-operating-system/",
+      "characters": 939
+    },
+    {
+      "url": "https://kgr.ac.in/board-of-studies-bos-meeting-department-of-civil-engineering-kgrcet/",
+      "characters": 2170
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-oops-through-java/",
+      "characters": 1337
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-introduction-to-data-science/",
+      "characters": 1172
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-slope-stability-analysis-by-using-different-methods-in-slope-w-software/",
+      "characters": 2381
+    },
+    {
+      "url": "https://kgr.ac.in/inauguration-of-certification-course-on-building-information-modelling-bim-using-revit/",
+      "characters": 1894
+    },
+    {
+      "url": "https://kgr.ac.in/integrated-circuit-design-technologies/",
+      "characters": 5259
+    },
+    {
+      "url": "https://kgr.ac.in/industry-institute-interaction/",
+      "characters": 1675
+    },
+    {
+      "url": "https://kgr.ac.in/reinforcement-learning/",
+      "characters": 900
+    },
+    {
+      "url": "https://kgr.ac.in/an-expert-lecture-on-cloud-computing/",
+      "characters": 1896
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-foundation-for-different-technologies/",
+      "characters": 2156
+    },
+    {
+      "url": "https://kgr.ac.in/inauguration-of-indian-green-building-council-igbc-student-chapter-seminar-on-green-buildings/",
+      "characters": 3847
+    },
+    {
+      "url": "https://kgr.ac.in/awareness-on-space-app-india-hackathon/",
+      "characters": 3740
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-career-guidance-2/",
+      "characters": 2553
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-career-guidance/",
+      "characters": 2067
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-machine-learning-3/",
+      "characters": 4481
+    },
+    {
+      "url": "https://kgr.ac.in/re-sustainability-pvt-ltdhyderabad-construction-and-demolition/",
+      "characters": 2159
+    },
+    {
+      "url": "https://kgr.ac.in/faculty-industrial-interaction/",
+      "characters": 1570
+    },
+    {
+      "url": "https://kgr.ac.in/the-orientation-program-of-the-first-year-mba-students/",
+      "characters": 2196
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-python-programming-career-opportunities/",
+      "characters": 1649
+    },
+    {
+      "url": "https://kgr.ac.in/12th-graduation-convocation-day/",
+      "characters": 1052
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-computer-organization-and-architecture/",
+      "characters": 2551
+    },
+    {
+      "url": "https://kgr.ac.in/conclave-presentation-from-department-of-civil-engineering/",
+      "characters": 5825
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-research-methodology/",
+      "characters": 1209
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-ai-in-cyber-security/",
+      "characters": 940
+    },
+    {
+      "url": "https://kgr.ac.in/activities/",
+      "characters": 844
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-advanced-processors-architecture-its-applications/",
+      "characters": 3502
+    },
+    {
+      "url": "https://kgr.ac.in/the-mba-freshers-party/",
+      "characters": 1873
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-control-system/",
+      "characters": 5515
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-data-warehousing-concepts-with-real-time-applications/",
+      "characters": 1281
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-cyber-security/",
+      "characters": 1428
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-algorithm-selection-and-solution/",
+      "characters": 1154
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-web-programming/",
+      "characters": 1284
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-ai-ml-and-deep-learning/",
+      "characters": 1279
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-on-mit-app-inventor/",
+      "characters": 2035
+    },
+    {
+      "url": "https://kgr.ac.in/understanding-the-application-layer-in-computer-networks/",
+      "characters": 941
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-elevate-innovate-future-proofing-success-through-aws-mastery/",
+      "characters": 4298
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-analysis-of-indeterminate-structures/",
+      "characters": 2443
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-energy-geotechnics-geostructures/",
+      "characters": 1516
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-rigid-pavement-analysis-conducted-on-rigid-pavement-analysis-and-design/",
+      "characters": 2321
+    },
+    {
+      "url": "https://kgr.ac.in/annual-national-workshop-sustainable-technologies-in-civil-engineering-perspectives-andstrategies-steps-2023-held-on-20-december-2023-at-griet/",
+      "characters": 2564
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-digital-signal-processing/",
+      "characters": 6455
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-probability-theory-stochastic-process/",
+      "characters": 2143
+    },
+    {
+      "url": "https://kgr.ac.in/one-day-hackathon-on-bim-using-rivet/",
+      "characters": 1412
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-network-analysis-and-transmission-line/",
+      "characters": 3538
+    },
+    {
+      "url": "https://kgr.ac.in/computer-science-engineering-data-science-january-2024/",
+      "characters": 1075
+    },
+    {
+      "url": "https://kgr.ac.in/driving-sustainability-one-day-workshop-on-green-innovations-in-construction/",
+      "characters": 2142
+    },
+    {
+      "url": "https://kgr.ac.in/1-a-seminar-on-student-centric-techniques/",
+      "characters": 1161
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-on-student-cantered-pedagogies-for-engineering-courses-from-6th-10th-feb/",
+      "characters": 964
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-green-buildings-towards-sustainable-infrastructure/",
+      "characters": 1655
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-internet-of-things-iot-was-conducted-on-20th-february-2024/",
+      "characters": 1803
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-big-data-analytics-was-conducted-on-21st-february-2024/",
+      "characters": 1790
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-computer-science-and-engineering-data-science-signed-an-mou-with-i-t-labs-by-the-founder-ceo-mr-pramodh-kumar/",
+      "characters": 968
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-r-programming-was-conducted-on-22th-february-2024/",
+      "characters": 1354
+    },
+    {
+      "url": "https://kgr.ac.in/a-seminar-on-emerging-trends-in-civil-engineering/",
+      "characters": 1193
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-operating-systems-was-conducted-on-1st-march-2024/",
+      "characters": 2280
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-overview-of-low-power-vlsi-design/",
+      "characters": 5617
+    },
+    {
+      "url": "https://kgr.ac.in/an-industry-visit-on-robotics-was-organized-on-30th-march-2024/",
+      "characters": 1827
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-evolution-of-antenna-and-wave-propagation/",
+      "characters": 4808
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-machine-learning/",
+      "characters": 1448
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-signihcance-and-1nfluence-of-vlsi-technology/",
+      "characters": 1899
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-automata-theory-and-compiler-design/",
+      "characters": 1196
+    },
+    {
+      "url": "https://kgr.ac.in/project-expo/",
+      "characters": 2923
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-artificial-intelligence/",
+      "characters": 2327
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-cybersecurity-was-conducted-on-23rd-may-2024/",
+      "characters": 2466
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-optimizing-switching-circuit-performance-through-effective-analysis/",
+      "characters": 3263
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-linear-ic-applications/",
+      "characters": 3791
+    },
+    {
+      "url": "https://kgr.ac.in/facultyachievements/",
+      "characters": 2802
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-july-2024/",
+      "characters": 4095
+    },
+    {
+      "url": "https://kgr.ac.in/a-seminar-on-mastery-in-data-science/",
+      "characters": 2094
+    },
+    {
+      "url": "https://kgr.ac.in/registration-drive/",
+      "characters": 2047
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-on-python-programming/",
+      "characters": 2608
+    },
+    {
+      "url": "https://kgr.ac.in/2-day-workshop-flexbox-properties-ui-ux-design/",
+      "characters": 2181
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-me-august-2024/",
+      "characters": 3614
+    },
+    {
+      "url": "https://kgr.ac.in/registration-drive-2/",
+      "characters": 2136
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-computer-networks-tools/",
+      "characters": 879
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-on-oops-concepts-python-patterns-and-introduction-to-numpy/",
+      "characters": 2863
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-on-numpy-pandas-and-machine-learning-algorithms/",
+      "characters": 4845
+    },
+    {
+      "url": "https://kgr.ac.in/3-days-workshop-on-introduction-to-internet-of-things/",
+      "characters": 3287
+    },
+    {
+      "url": "https://kgr.ac.in/introduction-to-very-large-scale-integration/",
+      "characters": 5728
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-computer-networks/",
+      "characters": 1011
+    },
+    {
+      "url": "https://kgr.ac.in/civil-engineering-site-operations-from-theory-to-practice-site-visit/",
+      "characters": 2856
+    },
+    {
+      "url": "https://kgr.ac.in/innovative-teaching-practices-in-air-pollution/",
+      "characters": 1288
+    },
+    {
+      "url": "https://kgr.ac.in/go-green-go-smart-go-low-carbonby-dhanlaxmi-bhukya-civil-3rd-year-reg-no-23qm5a0106/",
+      "characters": 2424
+    },
+    {
+      "url": "https://kgr.ac.in/2-day-workshop-on-flexbox-properfies-ui-ux-design/",
+      "characters": 2024
+    },
+    {
+      "url": "https://kgr.ac.in/faculty-development-participation-sustainable-water-and-waste-management/",
+      "characters": 1411
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-meseptember-2024/",
+      "characters": 2994
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-machine-learning/",
+      "characters": 1632
+    },
+    {
+      "url": "https://kgr.ac.in/ikarus-2024-successful-gcc-event-series-by-civil-engineering-department/",
+      "characters": 1381
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-on-introduction-to-data-science-python/",
+      "characters": 2503
+    },
+    {
+      "url": "https://kgr.ac.in/2-days-workshop-on-fundamental-practices-of-iot/",
+      "characters": 4721
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-sustainable-development-on-green-building-technologies/",
+      "characters": 1478
+    },
+    {
+      "url": "https://kgr.ac.in/civil-engineering-students-excel-at-varadhi-2k24-techno-fest/",
+      "characters": 1817
+    },
+    {
+      "url": "https://kgr.ac.in/ikarus-2024-national-level-tech-fest-on-internet-of-things-iot/",
+      "characters": 4410
+    },
+    {
+      "url": "https://kgr.ac.in/ikarus-2024-green-construction-club-hosts-a-series-of-successful-activities/",
+      "characters": 2082
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-me-october2024/",
+      "characters": 4568
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-web-and-social-media-analytics/",
+      "characters": 1782
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-rtos-based-embedded-system-design/",
+      "characters": 2771
+    },
+    {
+      "url": "https://kgr.ac.in/industrial-tour/",
+      "characters": 2187
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-data-mining/",
+      "characters": 1688
+    },
+    {
+      "url": "https://kgr.ac.in/inspiring-careers-in-civil-engineering-alumni-insights-from-mr-m-tulasi/",
+      "characters": 2097
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-design-philosophy-of-rcc-structural-members/",
+      "characters": 1396
+    },
+    {
+      "url": "https://kgr.ac.in/foundation-course-on-green-energy-buildings/",
+      "characters": 1554
+    },
+    {
+      "url": "https://kgr.ac.in/workshop-announcement/",
+      "characters": 1209
+    },
+    {
+      "url": "https://kgr.ac.in/innovative-teaching-practices-in-water-resource-engineering/",
+      "characters": 1339
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-menovember-2024/",
+      "characters": 2972
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-cse-aiml-presents-project-expo-on-ai-product-design-and-development/",
+      "characters": 1454
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-data-structures/",
+      "characters": 5328
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-modern-approaches-to-irrigation-optimizing-water-use-in-agriculture/",
+      "characters": 1635
+    },
+    {
+      "url": "https://kgr.ac.in/ikarus-national-technical-fest-2024/",
+      "characters": 6002
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-unraveling-earths-structures-foldsfaults-and-joints/",
+      "characters": 1575
+    },
+    {
+      "url": "https://kgr.ac.in/expert-lecture-on-principal-stresses-and-mohrs-circle-method/",
+      "characters": 1607
+    },
+    {
+      "url": "https://kgr.ac.in/one-week-online-faculty-development-programme-on-ai-tools-in-action-research-writing-real-world-solutions-through-hands-on-learning/",
+      "characters": 2287
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-medecember-2024/",
+      "characters": 2639
+    },
+    {
+      "url": "https://kgr.ac.in/faculty-achievements-2/",
+      "characters": 1791
+    },
+    {
+      "url": "https://kgr.ac.in/ai-hackday-2025/",
+      "characters": 1287
+    },
+    {
+      "url": "https://kgr.ac.in/6-days-fdp-on-generative-al-with-llm/",
+      "characters": 1109
+    },
+    {
+      "url": "https://kgr.ac.in/all-india-council-for-technical-education/",
+      "characters": 1116
+    },
+    {
+      "url": "https://kgr.ac.in/faculty-development-programme-on-generative-ai-with-llm-at-kg-reddy-college-of-engineering-and-technology/",
+      "characters": 1470
+    },
+    {
+      "url": "https://kgr.ac.in/three-day-workshop-on-exploring-2d-3d-modelling-tools-for-design-construction/",
+      "characters": 1734
+    },
+    {
+      "url": "https://kgr.ac.in/student-volunteering-at-the-1st-edition-of-igbc-telangana-hyderabad/",
+      "characters": 1481
+    },
+    {
+      "url": "https://kgr.ac.in/a-workshop-on-full-stack-web-development/",
+      "characters": 3205
+    },
+    {
+      "url": "https://kgr.ac.in/achievement-in-udhbhav-2025-a-national-level-techno-cultural-sports-fest/",
+      "characters": 1401
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-me-february2025/",
+      "characters": 2742
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-dimensional-analysis-and-model-similitude/",
+      "characters": 1468
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-overview-of-railway-engineering/",
+      "characters": 2287
+    },
+    {
+      "url": "https://kgr.ac.in/hackstorm-2025/",
+      "characters": 2658
+    },
+    {
+      "url": "https://kgr.ac.in/project-expo-2025-showcases-innovation-and-excellence-in-civil-engineering/",
+      "characters": 2071
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-and-hands-on-session-on-big-data-analytics/",
+      "characters": 4963
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-memarch-2025/",
+      "characters": 3155
+    },
+    {
+      "url": "https://kgr.ac.in/civil-kgrcet-team-redrock-wins-rs-50000-funding-in-i2i-challenge-2024-25/",
+      "characters": 2112
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-automata-theory-and-compiler-design/",
+      "characters": 1148
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-database-management-systems/",
+      "characters": 1117
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-session-on-design-and-analysis-of-algorithms/",
+      "characters": 1698
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-oops-through-java-2/",
+      "characters": 1155
+    },
+    {
+      "url": "https://kgr.ac.in/annual-function-2025/",
+      "characters": 1779
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-natural-language-processing/",
+      "characters": 1133
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-session-on-object-oriented-programming-through-java/",
+      "characters": 2257
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-me-april2025/",
+      "characters": 3478
+    },
+    {
+      "url": "https://kgr.ac.in/successful-industrial-visit-by-3rd-year-civil-engineering-students/",
+      "characters": 2363
+    },
+    {
+      "url": "https://kgr.ac.in/civil-faculty-excels-in-conclave/",
+      "characters": 1370
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-operating-system/",
+      "characters": 3000
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-search-engine-optimization-and-web-analytics-was-conducted-on-03rd-may-2024/",
+      "characters": 3430
+    },
+    {
+      "url": "https://kgr.ac.in/invitation-to-the-generative-ai-product-design-and-development-2-0-project-expo/",
+      "characters": 1569
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-the-role-of-supplementary-cementitious-materials-in-sustainable-concrete/",
+      "characters": 1977
+    },
+    {
+      "url": "https://kgr.ac.in/depaetment-of-civil-engineering-secured-conference-grant-under-aicte-vaani-scheme-2025-26/",
+      "characters": 2199
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-big-data-analytics-was-conducted-on-15th-may-2025/",
+      "characters": 2977
+    },
+    {
+      "url": "https://kgr.ac.in/a-3-day-hands-on-python-training-program/",
+      "characters": 1577
+    },
+    {
+      "url": "https://kgr.ac.in/pba-presentations-and-green-campus-3d-model-showcase-by-civil-engineering-students/",
+      "characters": 2725
+    },
+    {
+      "url": "https://kgr.ac.in/industrial-visit-to-phoenix-p25-triton-high-rise-project-a-valuable-learning-experience-for-b-tech-civil-engineering-students/",
+      "characters": 2067
+    },
+    {
+      "url": "https://kgr.ac.in/farewell-celebration-a-heartfelt-send-off-to-final-year-civil-engineering-students/",
+      "characters": 1981
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-me-may-2025/",
+      "characters": 6279
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-work-energy-principle-in-applied-mechanics/",
+      "characters": 1924
+    },
+    {
+      "url": "https://kgr.ac.in/students-achievements/",
+      "characters": 3071
+    },
+    {
+      "url": "https://kgr.ac.in/department-of-mechanical-engineering-me-june-2025/",
+      "characters": 5593
+    },
+    {
+      "url": "https://kgr.ac.in/we-hub-t-hub-and-t-work/",
+      "characters": 1906
+    },
+    {
+      "url": "https://kgr.ac.in/alumni-interactive-session-on-carrer-guidance/",
+      "characters": 1268
+    },
+    {
+      "url": "https://kgr.ac.in/three-day-hands-on-workshop-titled-iot-skill-a-thon-for-iii-and-iv-ece-students/",
+      "characters": 1750
+    },
+    {
+      "url": "https://kgr.ac.in/technical-event-titled-skillvance-2025/",
+      "characters": 1776
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-pid-to-state-space-designing-efficient-feed-back-control-systems/",
+      "characters": 1569
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-report-on-evolution-of-antenna-and-wave-propagation/",
+      "characters": 1368
+    },
+    {
+      "url": "https://kgr.ac.in/tech-mahindra-hosted-the-highly-anticipated-ai-days-2025-event/",
+      "characters": 1242
+    },
+    {
+      "url": "https://kgr.ac.in/iv-b-tech-i-sem-external-laboratory-panel-time-table-circular-a-y-2025-26/",
+      "characters": 845
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-ii-sem-result-analysis-circular/",
+      "characters": 773
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-iv-b-tech-i-sem-i-mid-time-table-circular-a-y-2025-26/",
+      "characters": 821
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-iv-b-tech-i-ii-sem-notification-circular-a-y-2025-26/",
+      "characters": 822
+    },
+    {
+      "url": "https://kgr.ac.in/ii-m-tech-mba-i-sem-i-mid-time-table-circular-a-y-2025-26/",
+      "characters": 812
+    },
+    {
+      "url": "https://kgr.ac.in/ii-m-tech-mba-i-ii-sem-notification-circular-a-y-2025-26/",
+      "characters": 815
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-ii-sem-result-analysis-circular/",
+      "characters": 771
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-b-tech-i-sem-internal-laboratory-time-table-circular-a-y-2025-26/",
+      "characters": 841
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-b-tech-i-sem-ii-mid-time-table-circular-a-y-2025-26-2/",
+      "characters": 814
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-b-tech-i-sem-ii-mid-time-table-circular-a-y-2025-26/",
+      "characters": 814
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-b-tech-i-ii-sem-reg-supply-external-laboratory-panel-time-table-circular-a-y-2025-26/",
+      "characters": 888
+    },
+    {
+      "url": "https://kgr.ac.in/ii-iii-b-tech-i-ii-sem-challenge-valuation-circular-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/i-b-tech-ii-sem-i-m-tech-ii-sem-ii-mba-ii-sem-result-analysis-circular/",
+      "characters": 835
+    },
+    {
+      "url": "https://kgr.ac.in/i-b-tech-i-ii-sem-notification-circular-a-y-2025-26/",
+      "characters": 801
+    },
+    {
+      "url": "https://kgr.ac.in/i-b-tech-i-ii-sem-and-i-m-tech-i-sem-challenge-valuation-circular-a-y-2025-26/",
+      "characters": 853
+    },
+    {
+      "url": "https://kgr.ac.in/i-ii-mba-i-ii-sem-rc-rv-circular-a-y-2025-26/",
+      "characters": 791
+    },
+    {
+      "url": "https://kgr.ac.in/grace-marks-circular/",
+      "characters": 729
+    },
+    {
+      "url": "https://kgr.ac.in/iv-b-tech-i-sem-kgr21-special-mid-notification-december-2025-a-y-2025-26/",
+      "characters": 847
+    },
+    {
+      "url": "https://kgr.ac.in/iv-b-tech-i-sem-kgr21-reg-supply-exams-notification-november-2025-a-y-2025-26/",
+      "characters": 857
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-i-ii-sem-kgr23-kgr21-reg-supply-exams-notification-december-2025-a-y-2025-26/",
+      "characters": 885
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-i-ii-sem-kgr23-kgr21-reg-supply-exams-notification-december-2025-a-y-2025-26/",
+      "characters": 882
+    },
+    {
+      "url": "https://kgr.ac.in/i-b-tech-i-ii-sem-kgr25-kgr23-kgr21-reg-supply-exams-notification-febuary-2026-a-y-2025-26/",
+      "characters": 893
+    },
+    {
+      "url": "https://kgr.ac.in/iv-b-tech-i-sem-kgr21-reg-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 836
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-ii-sem-kgr21-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 831
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-i-sem-kgr23-reg-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 823
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-i-sem-kgr21-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/ii-mba-ii-sem-kgr23-supply-exam-time-table-jan-2026-a-y-2025-26/",
+      "characters": 824
+    },
+    {
+      "url": "https://kgr.ac.in/ii-mba-i-sem-kgr23-reg-supply-exam-time-table-jan-2026-a-y-2025-26/",
+      "characters": 830
+    },
+    {
+      "url": "https://kgr.ac.in/ii-m-tech-i-sem-kgr24-reg-exam-time-table-jan-2026-a-y-2025-26/",
+      "characters": 824
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-ii-sem-kgr23-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-ii-sem-kgr21-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-i-sem-kgr23-reg-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 835
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-i-sem-kgr21-supply-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 827
+    },
+    {
+      "url": "https://kgr.ac.in/iv-b-tech-i-sem-kgr21-i-mid-exam-time-table-sep-2025-a-y-2025-26/",
+      "characters": 827
+    },
+    {
+      "url": "https://kgr.ac.in/iv-b-tech-i-sem-kgr21-ii-mid-exam-time-table-nov-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-i-sem-kgr23-ii-mid-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 831
+    },
+    {
+      "url": "https://kgr.ac.in/iii-b-tech-i-sem-kgr23-i-mid-exam-time-table-sep-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/ii-mba-i-sem-kgr23-i-mid-exam-time-table-oct-2025-a-y-2025-26/",
+      "characters": 821
+    },
+    {
+      "url": "https://kgr.ac.in/ii-m-tech-i-sem-kgr24-ii-mid-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/ii-m-tech-i-sem-kgr24-i-mid-exam-time-table-oct-2025-a-y-2025-26/",
+      "characters": 827
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-i-sem-kgr23-ii-mid-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 829
+    },
+    {
+      "url": "https://kgr.ac.in/ii-b-tech-i-sem-kgr23-i-mid-exam-time-table-sep-2025-a-y-2025-26/",
+      "characters": 827
+    },
+    {
+      "url": "https://kgr.ac.in/i-m-tech-i-sem-kgr24-i-mid-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 825
+    },
+    {
+      "url": "https://kgr.ac.in/i-mba-i-sem-kgr25-i-mid-exam-time-table-dec-2025-a-y-2025-26/",
+      "characters": 819
+    },
+    {
+      "url": "https://kgr.ac.in/i-b-tech-i-sem-kgr25-i-mid-exam-time-table-nov-2025-a-y-2025-26/",
+      "characters": 826
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-blockchain-technology/",
+      "characters": 1904
+    },
+    {
+      "url": "https://kgr.ac.in/expert-lecture-on-cryptography-and-network-security/",
+      "characters": 1690
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-applications-of-iot/",
+      "characters": 2437
+    },
+    {
+      "url": "https://kgr.ac.in/industrial-visit-to-national-academy-of-construction-a-society-of-state-government-of-telangana-hyderabad/",
+      "characters": 1575
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-influence-of-different-geological-structure-on-civil-engineering/",
+      "characters": 1601
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-soil-investigation-for-civil-engineering-structures/",
+      "characters": 2179
+    },
+    {
+      "url": "https://kgr.ac.in/achievements-of-department/",
+      "characters": 1066
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-on-ground-granulated-blast-furnace-slag-ggbs-is-16714-for-strong-durable-sustainable-green-construction/",
+      "characters": 1929
+    },
+    {
+      "url": "https://kgr.ac.in/seminar-oncareer-opportunities-in-core-engineers/",
+      "characters": 1623
+    },
+    {
+      "url": "https://kgr.ac.in/mou-signed-with-hiee-empowering-engineers-private-limited/",
+      "characters": 1108
+    },
+    {
+      "url": "https://kgr.ac.in/expert-talk-on-critical-concepts-and-overview-on-ground-improvement-techniques-case-studies/",
+      "characters": 1721
+    },
+    {
+      "url": "https://kgr.ac.in/graduation-day-celebration/",
+      "characters": 1040
+    },
+    {
+      "url": "https://kgr.ac.in/orientation-program-for-ii-nd-year-students/",
+      "characters": 1967
+    },
+    {
+      "url": "https://kgr.ac.in/webinar-on-evaluation-of-performance-for-pavement-roughness-on-highway-through-nsv/",
+      "characters": 1660
+    },
+    {
+      "url": "https://kgr.ac.in/1-expert-talk-on-overview-of-estimation-costing-project-management/",
+      "characters": 1411
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecturegroundwater-management-an-overview/",
+      "characters": 1826
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-discrete-mathematics/",
+      "characters": 2886
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-contest-free-grammar-and-turnig-machines-and-formal-language-automata-theory/",
+      "characters": 5877
+    },
+    {
+      "url": "https://kgr.ac.in/expert-lecture-computer-organization-and-architecture/",
+      "characters": 2160
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-web-technology/",
+      "characters": 2784
+    },
+    {
+      "url": "https://kgr.ac.in/guest-lecture-on-software-engineering/",
+      "characters": 2838
+    },
+    {
+      "url": "https://kgr.ac.in/summary-report-5/",
+      "characters": 1324
+    },
+    {
+      "url": "https://kgr.ac.in/summary-report-4/",
+      "characters": 1028
+    },
+    {
+      "url": "https://kgr.ac.in/summary-report-3/",
+      "characters": 1128
+    },
+    {
+      "url": "https://kgr.ac.in/summary-report-2/",
+      "characters": 1213
+    },
+    {
+      "url": "https://kgr.ac.in/online-seminar-on-evolution-of-nano-devices/",
+      "characters": 1378
+    },
+    {
+      "url": "https://kgr.ac.in/industry-requirements-in-vlsi-domain/",
+      "characters": 1334
+    },
+    {
+      "url": "https://kgr.ac.in/a-guest-lecture-on-data-mining/",
+      "characters": 1721
+    },
+    {
+      "url": "https://kgr.ac.in/hackathon-on-datathon/",
+      "characters": 939
+    },
+    {
+      "url": "https://kgr.ac.in/poster-presentation-on-pba/",
+      "characters": 978
+    },
+    {
+      "url": "https://kgr.ac.in/choosing-an-engineering-career-then-you-have-to-consider-certain-steps-in-choosing-the-college/",
+      "characters": 5860
+    },
+    {
+      "url": "https://kgr.ac.in/what-are-your-expectations-from-the-top-engineering-college-in-hyderabad/",
+      "characters": 5414
+    },
+    {
+      "url": "https://kgr.ac.in/why-does-choosing-engineering-as-a-career-have-many-opportunities/",
+      "characters": 5731
+    },
+    {
+      "url": "https://kgr.ac.in/must-read-tips-for-students-to-enhance-efficiency-in-higher-education/",
+      "characters": 5281
+    },
+    {
+      "url": "https://kgr.ac.in/passionate-about-your-career-then-joining-kgr-engineering-college-pave-the-way-for-a-successful-career/",
+      "characters": 5930
+    },
+    {
+      "url": "https://kgr.ac.in/how-to-select-the-best-engineering-college-in-hyderabad-find-the-answer-in-this-article/",
+      "characters": 5463
+    },
+    {
+      "url": "https://kgr.ac.in/the-kgr-philosophy-engineering-indias-change-makers/",
+      "characters": 4884
+    },
+    {
+      "url": "https://kgr.ac.in/enhance-your-career-by-choosing-the-best-engineering-college-in-hyderabad/",
+      "characters": 6044
+    },
+    {
+      "url": "https://kgr.ac.in/looking-for-the-best-engineering-college-in-hyderabad-then-go-to-the-kgr-institute-of-technology/",
+      "characters": 6071
+    },
+    {
+      "url": "https://kgr.ac.in/skills-you-should-develop-in-your-pursuit-of-education/",
+      "characters": 5581
+    },
+    {
+      "url": "https://kgr.ac.in/why-should-you-enrol-to-study-in-the-top-engineering-college-in-hyderabad/",
+      "characters": 5517
+    },
+    {
+      "url": "https://kgr.ac.in/the-facilities-offered-by-the-top-engineering-college-in-hyderabad/",
+      "characters": 5562
+    },
+    {
+      "url": "https://kgr.ac.in/are-you-looking-for-the-best-engineering-college-in-hyderabad/",
+      "characters": 5793
+    },
+    {
+      "url": "https://kgr.ac.in/steps-that-should-be-considered-while-choosing-the-best-engineering-college/",
+      "characters": 5721
+    },
+    {
+      "url": "https://kgr.ac.in/the-facilities-available-in-the-top-engineering-college-in-hyderabad/",
+      "characters": 5608
+    },
+    {
+      "url": "https://kgr.ac.in/factors-that-are-considered-to-choose-the-best-engineering-college/",
+      "characters": 5652
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/civil/",
+      "characters": 2915
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/cse/",
+      "characters": 2677
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/cse-aiml/",
+      "characters": 2670
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/cse-ds/",
+      "characters": 2690
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/ece/",
+      "characters": 2709
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/",
+      "characters": 2685
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/hs/",
+      "characters": 2705
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/mba/",
+      "characters": 1277
+    },
+    {
+      "url": "https://kgr.ac.in/category/events/mech/",
+      "characters": 2665
+    },
+    {
+      "url": "https://kgr.ac.in/category/news/",
+      "characters": 2842
+    }
+  ],
+  "failed": [
+    {
+      "url": "https://kgr.ac.in/programs/cseaiml-committees/",
+      "reason": "Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://kgr.ac.in/programs/cseaiml-committees/\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "url": "https://kgr.ac.in/skill-development-initiative-on-artificial-intelligence-for-ii-year-students/",
+      "reason": "Locator.inner_text: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator(\"body\")\n"
+    }
+  ],
+  "skipped": [],
+  "finished_at": "2026-10-16T15:14:53.935329"
+}

@@ -1,0 +1,2369 @@
+/**
+ * Whether the open trigger should use a pointer cursor (click / hover).
+ *
+ * @param {string} trigger `open_popup_trigger` from popup settings.
+ * @return {boolean}
+ */
+function dsmPopupTriggerUsesPointer( trigger ) {
+	return trigger === 'click' || trigger === 'hover';
+}
+
+/**
+ * Add pointer cursor class for interactive triggers (Divi: `cursor` may be inherited by children).
+ *
+ * @param {jQuery} $el jQuery collection.
+ * @param {string} trigger `open_popup_trigger`.
+ * @return {void}
+ */
+function dsmPopupAddPointerCursor( $el, trigger ) {
+	if ( dsmPopupTriggerUsesPointer( trigger ) ) {
+		$el.addClass( 'dsm-popup-trigger-pointer' );
+	}
+}
+
+/**
+ * Whether a node is a Supreme Mega Menu Pro item (child), not the parent menu module.
+ *
+ * Child `<li>` often omits `.et_pb_module`. `closest('.et_pb_module')` then binds the parent
+ * `dsm_mega_menu` and every item opens the popup.
+ *
+ * @param {Element|null} el Candidate host.
+ * @return {boolean}
+ */
+function dsmPopupIsMegaMenuChildHost( el ) {
+	if ( ! el || ! el.classList ) {
+		return false;
+	}
+	if ( el.classList.contains( 'dsm_mega_menu_child' ) ) {
+		return true;
+	}
+	return el.classList.contains( 'dsm-mega-menu-item' );
+}
+
+/**
+ * Module host for triggers + `.dsm-popup-trigger-pointer`.
+ *
+ * `render_block` appends `.dsm-popup` **after** the block root, so it is usually the **next sibling**
+ * of `div.et_pb_module`, not a descendant. Using `parentNode` then targets the column/wrapper
+ * (parent of both module and popup). Prefer the preceding module root; fall back to `closest`
+ * when markup nests the popup inside the module.
+ *
+ * Mega Menu children: prefer `.dsm_mega_menu_child` / `.dsm-mega-menu-item` before climbing to
+ * the parent `.et_pb_module`.
+ *
+ * @param {HTMLElement|null} container `.dsm-popup` element.
+ * @return {HTMLElement|null}
+ */
+function dsmPopupResolveTriggerRoot( container ) {
+	if ( ! container ) {
+		return null;
+	}
+	let el = container.previousElementSibling;
+	for ( let i = 0; el && i < 6; i++ ) {
+		if ( dsmPopupIsMegaMenuChildHost( el ) ) {
+			return el;
+		}
+		if (
+			el.classList &&
+			el.classList.contains( 'et_pb_module' )
+		) {
+			return el;
+		}
+		el = el.previousElementSibling;
+	}
+	const byMegaChild = container.closest(
+		'.dsm_mega_menu_child, .dsm-mega-menu-item'
+	);
+	if ( byMegaChild ) {
+		return byMegaChild;
+	}
+	const byClosest = container.closest( '.et_pb_module' );
+	if ( byClosest ) {
+		return byClosest;
+	}
+	const byVb = container.closest( '[data-et-vb-module]' );
+	if ( byVb ) {
+		return byVb;
+	}
+	return container.parentElement;
+}
+
+/**
+ * First `selector` match not inside a `.dsm-popup` shell.
+ * Popup markup may include `id="et-boc"` for CSS; Magnific `prependTo` must not target that node
+ * or it throws (new child is an ancestor of the parent) while attaching the overlay to the inline src.
+ *
+ * @param {string} selector CSS selector.
+ * @return {Element|null}
+ */
+function dsmPopupFirstQuerySelectorOutsidePopup( selector ) {
+	const list = document.querySelectorAll( selector );
+	for ( let i = 0; i < list.length; i++ ) {
+		const node = list[ i ];
+		if ( ! node.closest( '.dsm-popup' ) ) {
+			return node;
+		}
+	}
+	return null;
+}
+
+/**
+ * Whether the page uses Divi CPT/TB scoped CSS (`.et-db #et-boc .et-l` prefix).
+ *
+ * @return {boolean}
+ */
+function dsmPopupNeedsBuilderCssPrefix() {
+	const flag = window.diviSupreme5?.needsBuilderCssPrefix;
+
+	// `wp_localize_script` emits booleans as 1 / "".
+	if ( flag === true || flag === 1 || flag === '1' ) {
+		return true;
+	}
+	if ( flag === false || flag === 0 || flag === '0' ) {
+		return false;
+	}
+
+	// Divi adds `et-db` on body when CPT/TB scoped dynamic assets are active.
+	return document.body?.classList.contains( 'et-db' ) ?? false;
+}
+
+/**
+ * Magnific `prependTo` target: CPT/TB mounts inside `.et-db #et-boc .et-l` so Divi dynamic-assets
+ * (`row_cpt.css`, `block_row_cpt.css`, gutters, buttons, etc.) match the open popup. Standard pages
+ * use `#page-container` so `body #page-container …` module styles still apply.
+ *
+ * @return {Element|null}
+ */
+function dsmPopupResolveMagnificPrependTarget() {
+	if ( dsmPopupNeedsBuilderCssPrefix() ) {
+		const scopedLayout = dsmPopupFirstQuerySelectorOutsidePopup(
+			'.et-db #et-boc .et-l'
+		);
+		if ( scopedLayout ) {
+			return scopedLayout;
+		}
+	}
+
+	const pageContainer = dsmPopupFirstQuerySelectorOutsidePopup( '#page-container' );
+	if ( pageContainer ) {
+		return pageContainer;
+	}
+
+	let el;
+
+	if (
+		et_builder_utils_params?.condition?.diviTheme === false &&
+		et_builder_utils_params?.condition?.extraTheme === false
+	) {
+		el = document.querySelector( '#et_builder_outer_content' );
+	} else if ( typeof et_frontend_scripts !== 'undefined' ) {
+		el = dsmPopupFirstQuerySelectorOutsidePopup( '.et-db #et-boc .et-l' );
+	} else if ( typeof et_modules_wrapper === 'undefined' ) {
+		el = document.querySelector( '#page-container' );
+	} else {
+		el = dsmPopupFirstQuerySelectorOutsidePopup( '#et-boc' );
+	}
+
+	return el || document.querySelector( '#page-container' );
+}
+
+/**
+ * When true, avoid `$(window).trigger('et_pb_init_modules')` for this Magnific open.
+ *
+ * Global `et_pb_init_modules` runs every Visual Builder script-library init again. Menu (and similar)
+ * code redefines `document` delegated handlers and `resize` listeners on each firing, which blows up
+ * the stack and slows the builder preview.
+ *
+ * We only skip inside a nested iframe where Divi's Visual Builder is active (VB canvas / iframe preview).
+ *
+ * @return {boolean}
+ */
+function dsmPopupShouldSkipGlobalEtPbInitModules() {
+	try {
+		if ( window.self === window.top ) {
+			return false;
+		}
+		return (
+			typeof window.ET_Builder !== 'undefined' ||
+			(typeof window.parent !== 'undefined' &&
+				typeof window.parent.ET_Builder !== 'undefined')
+		);
+	} catch ( e ) {
+		return false;
+	}
+}
+
+/**
+ * Parse seconds from popup settings (`20`, `"20s"`, etc.).
+ *
+ * @param {unknown} raw Stored value from options JSON.
+ * @return {number} Non‑negative finite seconds or 0.
+ */
+function dsmPopupParseSecondsScalar( raw ) {
+	if ( raw === undefined || raw === null ) {
+		return 0;
+	}
+	const num = parseFloat( String( raw ).replace( /[^\d.-]/g, '' ) );
+	return Number.isFinite( num ) && num >= 0 ? num : 0;
+}
+
+/** Default animate.css timing when popup settings omit duration/delay keys. */
+const DSM_POPUP_ANIMATION_TIMING_DEFAULTS = Object.freeze( {
+	entrance_animation_duration: '0.4s',
+	entrance_animation_delay: '0s',
+	exit_animation_duration: '0.25s',
+	exit_animation_delay: '0s',
+} );
+
+/**
+ * @return {boolean} Whether the user prefers reduced motion.
+ */
+function dsmPopupPrefersReducedMotion() {
+	try {
+		return window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	} catch ( e ) {
+		return false;
+	}
+}
+
+/**
+ * @param {number} seconds Duration in seconds.
+ * @return {string} CSS time value.
+ */
+function dsmPopupFormatDurationCss( seconds ) {
+	if ( ! Number.isFinite( seconds ) || seconds < 0 ) {
+		return '0s';
+	}
+	const rounded = Math.round( seconds * 1000 ) / 1000;
+	return `${ rounded }s`;
+}
+
+/**
+ * Resolve entrance/exit duration and delay from popup config (seconds).
+ *
+ * @param {Object} config Popup options object.
+ * @param {'in'|'out'} phase Animation phase.
+ * @return {{ durationSec: number, delaySec: number }}
+ */
+function dsmPopupGetAnimationTiming( config, phase ) {
+	const isEnter = phase === 'in';
+	const durationKey = isEnter
+		? 'entrance_animation_duration'
+		: 'exit_animation_duration';
+	const delayKey = isEnter
+		? 'entrance_animation_delay'
+		: 'exit_animation_delay';
+	const fallbackDuration = isEnter ? 0.4 : 0.25;
+
+	if ( dsmPopupPrefersReducedMotion() ) {
+		return { durationSec: 0.01, delaySec: 0 };
+	}
+
+	const rawDuration =
+		config?.[ durationKey ] ??
+		DSM_POPUP_ANIMATION_TIMING_DEFAULTS[ durationKey ];
+	const rawDelay =
+		config?.[ delayKey ] ?? DSM_POPUP_ANIMATION_TIMING_DEFAULTS[ delayKey ];
+
+	let durationSec = dsmPopupParseSecondsScalar( rawDuration );
+	if ( durationSec <= 0 && rawDuration !== '0s' && rawDuration !== 0 ) {
+		durationSec = fallbackDuration;
+	}
+
+	return {
+		durationSec,
+		delaySec: dsmPopupParseSecondsScalar( rawDelay ),
+	};
+}
+
+/**
+ * Apply animate.css timing variables for the current animation phase.
+ *
+ * @param {jQuery} $popup Popup root element.
+ * @param {'in'|'out'} phase Animation phase.
+ * @param {Object} config Popup options object.
+ * @return {{ durationSec: number, delaySec: number }}
+ */
+function dsmPopupApplyAnimateTiming( $popup, phase, config ) {
+	const timing = dsmPopupGetAnimationTiming( config, phase );
+	const el = $popup?.get?.( 0 );
+
+	if ( ! el || ! el.style ) {
+		return timing;
+	}
+
+	el.style.setProperty(
+		'--animate-duration',
+		dsmPopupFormatDurationCss( timing.durationSec )
+	);
+	el.style.setProperty(
+		'--animate-delay',
+		dsmPopupFormatDurationCss( timing.delaySec )
+	);
+
+	$popup.removeClass( 'dsm-popup-is-entering dsm-popup-is-leaving' );
+	$popup.addClass(
+		phase === 'in' ? 'dsm-popup-is-entering' : 'dsm-popup-is-leaving'
+	);
+
+	return timing;
+}
+
+/**
+ * Clear inline animate.css timing variables after close.
+ *
+ * @param {jQuery} $popup Popup root element.
+ * @return {void}
+ */
+function dsmPopupClearAnimateTiming( $popup ) {
+	const el = $popup?.get?.( 0 );
+	if ( ! el?.style ) {
+		return;
+	}
+	el.style.removeProperty( '--animate-duration' );
+	el.style.removeProperty( '--animate-delay' );
+	$popup.removeClass( 'dsm-popup-is-entering dsm-popup-is-leaving' );
+}
+
+/**
+ * Magnific Popup removalDelay: exit delay + duration (+ small buffer).
+ *
+ * @param {Object} config Popup options object.
+ * @return {number} Milliseconds.
+ */
+function dsmPopupGetExitRemovalDelayMs( config ) {
+	if ( dsmPopupPrefersReducedMotion() ) {
+		return 16;
+	}
+	const { durationSec, delaySec } = dsmPopupGetAnimationTiming(
+		config,
+		'out'
+	);
+	return Math.max(
+		16,
+		Math.round( ( delaySec + durationSec ) * 1000 + 50 )
+	);
+}
+
+/**
+ * D4 `dsm_modules_popup_position_type` parity (`absolute` | `fixed`).
+ *
+ * @param {Record<string, unknown>|undefined|null} config Popup options JSON.
+ * @return {'absolute'|'fixed'}
+ */
+function dsmPopupResolvePositionType( config ) {
+	const raw =
+		config?.popup_position_type ?? config?.popupPositionType ?? 'absolute';
+	return raw === 'fixed' ? 'fixed' : 'absolute';
+}
+
+/**
+ * D4 `dsm_modules_overlay` parity — when off, backdrop is removed and page stays interactive.
+ *
+ * @param {Record<string, unknown>|undefined|null} config Popup options JSON.
+ * @return {boolean}
+ */
+function dsmPopupShowOverlay( config ) {
+	const raw = config?.popup_show_overlay ?? config?.popupShowOverlay ?? 'on';
+	if ( raw === false || raw === 'off' || raw === 0 || raw === '0' ) {
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Remove Magnific backdrop and mark wrap so CSS passes clicks through outside the popup box.
+ *
+ * @return {void}
+ */
+function dsmPopupApplyNoOverlayMode() {
+	if ( typeof jQuery !== 'function' ) {
+		return;
+	}
+	const $ = jQuery;
+	$( '.mfp-wrap.dsm-popup-modal' ).addClass( 'dsm-popup-no-overlay' );
+	$( '.mfp-bg' ).each( function () {
+		const $bg = $( this );
+		if ( $bg.next( '.mfp-wrap.dsm-popup-modal' ).length ) {
+			$bg.remove();
+		}
+	} );
+}
+
+/**
+ * Clear non-blocking overlay class after Magnific closes.
+ *
+ * @return {void}
+ */
+function dsmPopupClearNoOverlayMode() {
+	if ( typeof jQuery !== 'function' ) {
+		return;
+	}
+	jQuery( '.mfp-wrap.dsm-popup-modal' ).removeClass( 'dsm-popup-no-overlay' );
+}
+
+/**
+ * Capture listener for overlay_click when Magnific cannot receive the click.
+ * Used when Show Overlay is off, and when position is fixed (closeOnBgClick stays
+ * off; wrap / `.mfp-bg` use pointer-events: none).
+ *
+ * @type {((event: Event) => void)|null}
+ */
+let dsmPopupOutsideClickCloser = null;
+
+/** @type {number} */
+let dsmPopupOutsideClickBindTimer = 0;
+
+/**
+ * Whether the event target is inside the popup box (content, not the page).
+ *
+ * @param {EventTarget|null} target Click target.
+ * @return {boolean}
+ */
+function dsmPopupEventTargetInsidePopupBox( target ) {
+	let el = null;
+	if ( target instanceof Element ) {
+		el = target;
+	} else if ( target && target.parentElement ) {
+		el = target.parentElement;
+	}
+	if ( ! el || typeof el.closest !== 'function' ) {
+		return false;
+	}
+
+	if ( el.closest( '.mfp-bg' ) ) {
+		return false;
+	}
+
+	return Boolean(
+		el.closest( '.mfp-content' ) ||
+			el.closest( '.dsm-popup' ) ||
+			el.closest( '.dsm-popup-wrapper' ) ||
+			el.closest( '.dsm-custom-close' )
+	);
+}
+
+/**
+ * Remove the no-overlay outside-click closer.
+ *
+ * @return {void}
+ */
+function dsmPopupUnbindOutsideClickClose() {
+	if ( dsmPopupOutsideClickBindTimer ) {
+		window.clearTimeout( dsmPopupOutsideClickBindTimer );
+		dsmPopupOutsideClickBindTimer = 0;
+	}
+	if ( dsmPopupOutsideClickCloser ) {
+		document.removeEventListener(
+			'click',
+			dsmPopupOutsideClickCloser,
+			true
+		);
+		dsmPopupOutsideClickCloser = null;
+	}
+}
+
+/**
+ * Close on the next click outside the popup box without a blocking backdrop.
+ *
+ * @return {void}
+ */
+function dsmPopupBindOutsideClickClose() {
+	dsmPopupUnbindOutsideClickClose();
+
+	const closer = ( event ) => {
+		if ( dsmPopupEventTargetInsidePopupBox( event.target ) ) {
+			return;
+		}
+		if (
+			typeof jQuery === 'function' &&
+			jQuery.magnificPopup?.instance?.isOpen
+		) {
+			jQuery.magnificPopup.close();
+		}
+	};
+
+	dsmPopupOutsideClickCloser = closer;
+	dsmPopupOutsideClickBindTimer = window.setTimeout( () => {
+		dsmPopupOutsideClickBindTimer = 0;
+		if ( dsmPopupOutsideClickCloser !== closer ) {
+			return;
+		}
+		document.addEventListener( 'click', closer, true );
+	}, 0 );
+}
+
+/**
+ * Magnific `fixedContentPos`: D4 uses `true` for absolute (lock scroll), `false` for fixed.
+ *
+ * @param {'absolute'|'fixed'} positionType Popup position type.
+ * @return {boolean}
+ */
+function dsmPopupMagnificFixedContentPos( positionType ) {
+	return positionType !== 'fixed';
+}
+
+/**
+ * Whether DSM should apply a mobile-safe background scroll lock (absolute / modal mode).
+ *
+ * @param {'absolute'|'fixed'} positionType Popup position type.
+ * @return {boolean}
+ */
+function dsmPopupShouldLockBackgroundScroll( positionType ) {
+	return positionType !== 'fixed';
+}
+
+/** @type {number} */
+let dsmPopupBackgroundScrollLockCount = 0;
+
+/** @type {number} */
+let dsmPopupBackgroundScrollLockY = 0;
+
+/**
+ * Lock page scroll (iOS-safe: fixed body + preserved scroll offset).
+ *
+ * @return {void}
+ */
+function dsmPopupLockBackgroundScroll() {
+	if ( dsmPopupBackgroundScrollLockCount === 0 ) {
+		dsmPopupBackgroundScrollLockY =
+			window.scrollY ||
+			window.pageYOffset ||
+			document.documentElement.scrollTop ||
+			0;
+		document.documentElement.classList.add( 'dsm-popup-scroll-lock' );
+		document.body.classList.add( 'dsm-popup-scroll-lock' );
+		document.body.style.position = 'fixed';
+		document.body.style.top = `-${ dsmPopupBackgroundScrollLockY }px`;
+		document.body.style.left = '0';
+		document.body.style.right = '0';
+		document.body.style.width = '100%';
+		document.body.style.overflow = 'hidden';
+		document.documentElement.style.overflow = 'hidden';
+	}
+	dsmPopupBackgroundScrollLockCount += 1;
+}
+
+/**
+ * Release scroll lock from {@see dsmPopupLockBackgroundScroll}.
+ *
+ * @return {void}
+ */
+function dsmPopupUnlockBackgroundScroll() {
+	if ( dsmPopupBackgroundScrollLockCount <= 0 ) {
+		return;
+	}
+	dsmPopupBackgroundScrollLockCount -= 1;
+	if ( dsmPopupBackgroundScrollLockCount > 0 ) {
+		return;
+	}
+	const scrollY = dsmPopupBackgroundScrollLockY;
+	document.documentElement.classList.remove( 'dsm-popup-scroll-lock' );
+	document.body.classList.remove( 'dsm-popup-scroll-lock' );
+	document.body.style.position = '';
+	document.body.style.top = '';
+	document.body.style.left = '';
+	document.body.style.right = '';
+	document.body.style.width = '';
+	document.body.style.overflow = '';
+	document.documentElement.style.overflow = '';
+	window.scrollTo( 0, scrollY );
+	dsmPopupBackgroundScrollLockY = 0;
+}
+
+/**
+ * Apply D4 position-type classes on the open Magnific wrap and override Magnific inline styles.
+ *
+ * @param {'absolute'|'fixed'} positionType Popup position type.
+ * @param {boolean} showOverlay Whether the backdrop should receive clicks.
+ * @return {void}
+ */
+function dsmPopupApplyPositionTypeClasses( positionType, showOverlay = true ) {
+	const wrap = document.querySelector( '.mfp-wrap.dsm-popup-modal' );
+	if ( ! wrap ) {
+		return;
+	}
+	wrap.classList.remove( 'dsm-popup-position-absolute', 'dsm-popup-position-fixed' );
+	wrap.classList.add( `dsm-popup-position-${ positionType }` );
+
+	const mainAlign = getComputedStyle( wrap )
+		.getPropertyValue( '--dsm-popup-main-align' )
+		.trim();
+	const mainJustifyByAlign = {
+		top: 'flex-start',
+		middle: 'center',
+		bottom: 'flex-end',
+	};
+	const mainJustify = mainJustifyByAlign[ mainAlign ] ?? 'center';
+
+	const container = wrap.querySelector( '.mfp-container' );
+	const content = wrap.querySelector( '.mfp-content' );
+	const bg = wrap.previousElementSibling;
+
+	if ( positionType !== 'fixed' ) {
+		// Absolute: flex alignment only — Magnific keeps `fixedContentPos` scroll lock.
+		wrap.style.removeProperty( 'pointer-events' );
+		if ( container instanceof HTMLElement ) {
+			Object.assign( container.style, {
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: mainJustify,
+				alignItems: 'stretch',
+				padding: '0',
+				pointerEvents: 'auto',
+			} );
+		}
+		if ( content instanceof HTMLElement ) {
+			Object.assign( content.style, {
+				position: 'relative',
+				flex: '0 0 auto',
+				pointerEvents: 'auto',
+			} );
+		}
+		if ( bg instanceof HTMLElement && bg.classList.contains( 'mfp-bg' ) ) {
+			bg.style.removeProperty( 'pointer-events' );
+			dsmPopupSetOverlayHitTarget( bg, showOverlay );
+		}
+		return;
+	}
+
+	// Magnific `fixedContentPos:false` sets inline absolute + scroll offset — pin shell; flex aligns popup box.
+	Object.assign( wrap.style, {
+		position: 'fixed',
+		top: '0',
+		left: '0',
+		right: '0',
+		bottom: '0',
+		width: '100%',
+		height: '100%',
+		pointerEvents: 'none',
+	} );
+
+	if ( container instanceof HTMLElement ) {
+		Object.assign( container.style, {
+			position: 'fixed',
+			top: '0',
+			left: '0',
+			right: '0',
+			bottom: '0',
+			height: '100%',
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: mainJustify,
+			alignItems: 'stretch',
+			padding: '0',
+			pointerEvents: 'none',
+		} );
+	}
+
+	if ( content instanceof HTMLElement ) {
+		Object.assign( content.style, {
+			position: 'relative',
+			flex: '0 0 auto',
+			pointerEvents: 'auto',
+		} );
+	}
+
+	if ( bg instanceof HTMLElement && bg.classList.contains( 'mfp-bg' ) ) {
+		Object.assign( bg.style, {
+			position: 'fixed',
+			top: '0',
+			left: '0',
+			right: '0',
+			bottom: '0',
+		} );
+		dsmPopupSetOverlayHitTarget( bg, showOverlay );
+	}
+}
+
+/**
+ * Overlay-on must receive clicks (beats fixed-mode `pointer-events: none !important`).
+ * Overlay-off keeps the backdrop non-blocking.
+ *
+ * @param {HTMLElement} bg Magnific `.mfp-bg`.
+ * @param {boolean} showOverlay Whether Show Overlay is on.
+ * @return {void}
+ */
+function dsmPopupSetOverlayHitTarget( bg, showOverlay ) {
+	if ( showOverlay ) {
+		bg.style.setProperty( 'pointer-events', 'auto', 'important' );
+	} else {
+		bg.style.setProperty( 'pointer-events', 'none', 'important' );
+	}
+}
+
+/**
+ * Remove position-type classes and Magnific inline overrides after close.
+ *
+ * @return {void}
+ */
+function dsmPopupClearPositionTypeClasses() {
+	const wrap = document.querySelector( '.mfp-wrap.dsm-popup-modal' );
+	if ( ! wrap ) {
+		return;
+	}
+	wrap.classList.remove(
+		'dsm-popup-position-absolute',
+		'dsm-popup-position-fixed'
+	);
+	wrap.removeAttribute( 'style' );
+
+	const container = wrap.querySelector( '.mfp-container' );
+	if ( container instanceof HTMLElement ) {
+		container.removeAttribute( 'style' );
+	}
+
+	const content = wrap.querySelector( '.mfp-content' );
+	if ( content instanceof HTMLElement ) {
+		content.removeAttribute( 'style' );
+	}
+
+	const bg = wrap.previousElementSibling;
+	if ( bg instanceof HTMLElement && bg.classList.contains( 'mfp-bg' ) ) {
+		bg.removeAttribute( 'style' );
+	}
+}
+
+const DSM_POPUP_CLOSE_TRIGGER_ORDER_EXT = Object.freeze(
+	/** @type {const} */ ( [
+		'overlay_click',
+		'esc_key',
+		'close_button',
+		'css_class',
+	] )
+);
+
+/**
+ * Normalize close-trigger slugs from `close_popup_triggers` (array) or legacy `close_popup_trigger` (string).
+ *
+ * @param {Record<string, unknown>|null|undefined} raw Popup options/config.
+ * @return {string[]} Deduplicated slugs; fallback `['overlay_click']`.
+ */
+function dsmNormalizeClosePopupTriggers( raw ) {
+	const valid = new Set( DSM_POPUP_CLOSE_TRIGGER_ORDER_EXT );
+	const picked = [];
+
+	if ( raw && typeof raw === 'object' ) {
+		const triggers = raw.close_popup_triggers;
+		if ( Array.isArray( triggers ) ) {
+			for ( let i = 0; i < triggers.length; i++ ) {
+				const id =
+					triggers[ i ] !== null && triggers[ i ] !== undefined
+						? String( triggers[ i ] )
+						: '';
+				if ( id && valid.has( id ) && ! picked.includes( id ) ) {
+					picked.push( id );
+				}
+			}
+		}
+		const legacy = raw.close_popup_trigger;
+		if (
+			typeof legacy === 'string' &&
+			legacy.trim() !== '' &&
+			valid.has( legacy ) &&
+			! picked.includes( legacy )
+		) {
+			picked.push( legacy );
+		}
+	}
+
+	if ( picked.length === 0 ) {
+		return [ 'overlay_click' ];
+	}
+
+	return DSM_POPUP_CLOSE_TRIGGER_ORDER_EXT.filter( ( id ) =>
+		picked.includes( id )
+	);
+}
+
+const DSM_POPUP_OPEN_FREQUENCIES = Object.freeze(
+	/** @type {const} */ ( [
+		'unlimited',
+		'session',
+		'day',
+		'week',
+		'month',
+	] )
+);
+
+/**
+ * Resolved frequency from markup JSON (`popup_open_frequency` + legacy fallback).
+ *
+ * @param {{ popup_open_frequency?: string; popup_max_opens_per_session?: string|number }|undefined} config
+ * @return {typeof DSM_POPUP_OPEN_FREQUENCIES[number]}
+ */
+function dsmPopupResolveOpenFrequency( config ) {
+	const rawFreq =
+		config && typeof config.popup_open_frequency === 'string'
+			? config.popup_open_frequency.trim().toLowerCase()
+			: '';
+	if ( DSM_POPUP_OPEN_FREQUENCIES.includes( rawFreq ) ) {
+		return /** @type {typeof DSM_POPUP_OPEN_FREQUENCIES[number]} */ (
+			rawFreq
+		);
+	}
+	let maxFallback = parseInt(
+		String( config?.popup_max_opens_per_session ?? '0' ),
+		10
+	);
+	maxFallback =
+		Number.isFinite( maxFallback ) && maxFallback > 0 ? maxFallback : 0;
+	return maxFallback > 0 ? 'session' : 'unlimited';
+}
+
+/** @return {string} Local calendar date YYYY-MM-DD */
+function dsmPopupLocalCalendarDaySlot() {
+	const d = new Date();
+	return `${ d.getFullYear() }-${ String( d.getMonth() + 1 ).padStart( 2, '0' ) }-${ String( d.getDate() ).padStart( 2, '0' ) }`;
+}
+
+/** Monday (local time) anchor for ISO-style week grouping. */
+function dsmPopupLocalMondaySlot() {
+	const d = new Date();
+	d.setHours( 0, 0, 0, 0 );
+	const dow = d.getDay();
+	const offsetFromMonday =
+		dow === 0 ? -6 /** Sunday -> prior Monday */ : 1 - dow;
+	d.setDate( d.getDate() + offsetFromMonday );
+	return `${ d.getFullYear() }-${ String( d.getMonth() + 1 ).padStart( 2, '0' ) }-${ String(
+		d.getDate()
+	).padStart( 2, '0' ) }`;
+}
+
+/** @return {string} YYYY-MM (local calendar month) */
+function dsmPopupLocalMonthSlot() {
+	const d = new Date();
+	return `${ d.getFullYear() }-${ String( d.getMonth() + 1 ).padStart(
+		2,
+		'0'
+	) }`;
+}
+
+/**
+ * Cookie slot key for recurring buckets.
+ *
+ * @param {'day'|'week'|'month'} kind
+ */
+function dsmPopupSlotKeyForPeriodic( kind ) {
+	if ( kind === 'week' ) {
+		return dsmPopupLocalMondaySlot();
+	}
+	if ( kind === 'month' ) {
+		return dsmPopupLocalMonthSlot();
+	}
+	return dsmPopupLocalCalendarDaySlot();
+}
+
+/** @param {string} cookieName */
+function dsmPopupReadCookieValueRaw( cookieName ) {
+	const escaped = cookieName.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
+	const pattern = new RegExp( '(?:^|; )' + escaped + '=([^;]*)' );
+	const m = typeof document !== 'undefined' ? document.cookie.match( pattern ) : null;
+	if ( ! m || ! m[ 1 ] ) {
+		return '';
+	}
+	try {
+		return decodeURIComponent( m[ 1 ].trim() );
+	} catch ( e ) {
+		return '';
+	}
+}
+
+/**
+ * Persist cookie (optional Max-Age for periodic quotas).
+ *
+ * @param {string} name Cookie name.
+ * @param {string} value Raw value after encodeURIComponent segments.
+ * @param {number} maxAgeSeconds 0 for session semantics (omit Max-Age).
+ */
+function dsmPopupWriteCookie( name, value, maxAgeSeconds = 0 ) {
+	let expires = ';path=/;SameSite=Lax';
+	if ( maxAgeSeconds > 0 ) {
+		expires += `;Max-Age=${ Math.round( maxAgeSeconds ) }`;
+	}
+	document.cookie = `${ name }=${ encodeURIComponent(
+		value
+	) }${ expires }`;
+}
+
+/**
+ * @param {string|number} popupId Popup library post ID.
+ * @param {'day'|'week'|'month'} periodic
+ */
+function dsmPopupPeriodicQuotaCookieName( popupId, periodic ) {
+	return `dsm_popup_${ String( popupId ) }_quota_${ periodic }`;
+}
+
+const DSM_POPUP_QUOTA_PERIODIC_MAX_AGE = 400 * 24 * 60 * 60;
+
+/**
+ * Legacy session tally (survives until browser exits).
+ *
+ * @param {string|number} popupId Popup layout ID.
+ * @return {string}
+ */
+function dsmPopupSessionOpensCookieName( popupId ) {
+	return `dsm_popup_${ String( popupId ) }_session_opens`;
+}
+
+function dsmPopupGetSessionOpenCount( popupId ) {
+	const raw = dsmPopupReadCookieValueRaw(
+		dsmPopupSessionOpensCookieName( popupId )
+	);
+	if ( ! raw ) {
+		return 0;
+	}
+	const v = parseInt( raw, 10 );
+	return Number.isFinite( v ) && v >= 0 ? v : 0;
+}
+
+function dsmPopupIncrementSessionOpenCount( popupId ) {
+	const name = dsmPopupSessionOpensCookieName( popupId );
+	const next = dsmPopupGetSessionOpenCount( popupId ) + 1;
+	dsmPopupWriteCookie( name, String( next ), 0 );
+}
+
+/**
+ * Opens recorded for day/week/month buckets (`slot|count`; slot mismatch → reads as zero).
+ *
+ * @param {string|number} popupId
+ * @param {'day'|'week'|'month'} periodic
+ * @return {number}
+ */
+function dsmPopupGetPeriodicQuotaCount( popupId, periodic ) {
+	const name = dsmPopupPeriodicQuotaCookieName( popupId, periodic );
+	const expected = dsmPopupSlotKeyForPeriodic( periodic );
+	const raw = dsmPopupReadCookieValueRaw( name );
+	if ( ! raw || ! raw.includes( '|' ) ) {
+		return 0;
+	}
+	const bar = raw.indexOf( '|' );
+	const slot = raw.slice( 0, bar );
+	const countPart = raw.slice( bar + 1 );
+	const count = parseInt( countPart, 10 ) || 0;
+	return slot === expected ? Math.max( 0, count ) : 0;
+}
+
+/**
+ * @param {string|number} popupId
+ * @param {'day'|'week'|'month'} periodic
+ * @return {void}
+ */
+function dsmPopupIncrementPeriodicQuota( popupId, periodic ) {
+	const name = dsmPopupPeriodicQuotaCookieName( popupId, periodic );
+	const expected = dsmPopupSlotKeyForPeriodic( periodic );
+	const next = dsmPopupGetPeriodicQuotaCount( popupId, periodic ) + 1;
+	dsmPopupWriteCookie(
+		name,
+		`${ expected }|${ next }`,
+		DSM_POPUP_QUOTA_PERIODIC_MAX_AGE
+	);
+}
+
+/**
+ * Opens used for selected frequency tier.
+ *
+ * @param {string|number} popupId
+ * @param {'session'|'day'|'week'|'month'} frequency Quota tier.
+ * @return {number}
+ */
+function dsmPopupGetOpenQuotaCount( popupId, frequency ) {
+	switch ( frequency ) {
+		case 'session':
+			return dsmPopupGetSessionOpenCount( popupId );
+		case 'day':
+			return dsmPopupGetPeriodicQuotaCount( popupId, 'day' );
+		case 'week':
+			return dsmPopupGetPeriodicQuotaCount( popupId, 'week' );
+		case 'month':
+			return dsmPopupGetPeriodicQuotaCount( popupId, 'month' );
+		default:
+			return 0;
+	}
+}
+
+/**
+ * Persist one counted open entry for quotas.
+ *
+ * @param {string|number} popupId
+ * @param {'session'|'day'|'week'|'month'} frequency Quota tier.
+ */
+function dsmPopupIncrementOpenQuota( popupId, frequency ) {
+	switch ( frequency ) {
+		case 'session':
+			dsmPopupIncrementSessionOpenCount( popupId );
+			break;
+		case 'day':
+			dsmPopupIncrementPeriodicQuota( popupId, 'day' );
+			break;
+		case 'week':
+			dsmPopupIncrementPeriodicQuota( popupId, 'week' );
+			break;
+		case 'month':
+			dsmPopupIncrementPeriodicQuota( popupId, 'month' );
+			break;
+		default:
+			break;
+	}
+}
+
+/**
+ * DSM Popup Class
+ * Handles the initialization and management of popups in the Divi theme.
+ */
+class DSM_Popup {
+	/**
+	 * The container element.
+	 *
+	 * @type {HTMLElement}
+	 */
+	container;
+
+	/**
+	 * The root element.
+	 *
+	 * @type {HTMLElement}
+	 */
+	root;
+
+	/**
+	 * The config object containing popup settings.
+	 *
+	 * @type {Object}
+	 */
+	config;
+
+	/**
+	 * The jQuery object.
+	 *
+	 * @type {jQuery}
+	 */
+	$;
+
+	/**
+	 * Timer for popup reopening.
+	 *
+	 * @type {number|null}
+	 */
+	reopenTimer = null;
+
+	/**
+	 * Timer for delaying Magnific open (all popup types).
+	 *
+	 * @type {number|null}
+	 */
+	openDelayTimer = null;
+
+	/**
+	 * When true, skip open-quota tally (VB `show({ immediate: true })`).
+	 *
+	 * @type {boolean}
+	 */
+	skipPopupOpenQuotaAccounting = false;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param {HTMLElement} container The container element.
+	 */
+	constructor( container ) {
+		this.container = container;
+		this.root =
+			dsmPopupResolveTriggerRoot( container ) || this.container.parentNode;
+		this.config = this.getConfig();
+		this.$ = jQuery;
+		this.init();
+	}
+
+	/**
+	 * Get a parameter from the config.
+	 *
+	 * @param {string} key The key to get.
+	 * @param {any} defaultValue The default value to return if the key is not found.
+	 * @return {any} The value of the key.
+	 */
+
+	getParam( key, defaultValue = null ) {
+		const value = this.config[ key ] || defaultValue;
+		if ( value === 'on' ) {
+			return true;
+		}
+		if ( value === 'off' ) {
+			return false;
+		}
+		return this.config[ key ] || defaultValue;
+	}
+
+	/**
+	 * Get the config from the container's data attribute.
+	 *
+	 * @return {Object} The parsed config object.
+	 */
+	getConfig() {
+		try {
+			return JSON.parse( this.container.dataset.dsmPopupOptions );
+		} catch ( error ) {
+			console.error( 'Failed to parse popup config:', error );
+			return {};
+		}
+	}
+
+	/**
+	 * Check if popup should be shown based on last close time.
+	 * This check only applies for page load and exit intent popups.
+	 *
+	 * @param {string} popupId The popup ID.
+	 * @param {string} popupAppear The popup appear setting.
+	 * @param {number} popupAppearAfterXHours Hours to wait before showing again.
+	 * @param {boolean} isTimerTriggered Whether this check was triggered by a timer.
+	 * @return {boolean} Whether the popup should be shown.
+	 */
+	shouldShowPopup(
+		popupId,
+		popupAppear,
+		popupAppearAfterXHours,
+		popupAppearAfterXDays,
+		isTimerTriggered = false
+	) {
+		// If timer triggered it, bypass the time check
+		if ( isTimerTriggered ) {
+			return true;
+		}
+
+		// If popup appears always, show it
+		if ( popupAppear === 'always' ) {
+			return true;
+		}
+
+		const storageKey = `dsm_popup_${ popupId }_last_close`;
+		const lastCloseTime = localStorage.getItem( storageKey );
+
+		// If no last close time exists, show the popup
+		if ( ! lastCloseTime ) {
+			return true;
+		}
+
+		if ( popupAppear === 'after_x_hours' ) {
+			const waitTime =
+				parseInt( popupAppearAfterXHours ) * 60 * 60 * 1000; // Convert hours to milliseconds
+			const timeSinceLastClose = Date.now() - parseInt( lastCloseTime );
+			return timeSinceLastClose >= waitTime;
+		}
+
+		if ( popupAppear === 'after_x_days' ) {
+			const waitTime =
+				parseInt( popupAppearAfterXDays ) * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+			const timeSinceLastClose = Date.now() - parseInt( lastCloseTime );
+			return timeSinceLastClose >= waitTime;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Initialize the popup.
+	 */
+	init() {
+		const popupType = this.getParam( 'popup_type' );
+
+		window.addEventListener( 'DOMContentLoaded', () => {
+			switch ( popupType ) {
+				case 'module':
+					this.initModulePopup();
+					break;
+				case 'page_load':
+					this.initPageLoadPopup();
+					break;
+				case 'exit_intent':
+					this.initExitIntentPopup();
+					break;
+				case 'targetted':
+					this.initTargetByClassPopup();
+					this.initTargetByIdPopup();
+					break;
+				case 'woocommerce':
+					this.initWooCommerceEvents();
+					break;
+			}
+		} );
+	}
+
+	/**
+	 * Initialize WooCommerce event triggers.
+	 */
+	initWooCommerceEvents() {
+		const action = this.getParam( 'wc_action' );
+
+		let couponBeingApplied = false;
+		let couponBeingRemoved = false;
+		let previousItems = null;
+		let previousCartData = null;
+		let cartUpdateTimer = null;
+		let lastCartUpdatePopupRequest = 0;
+		let wooActionTimer = null;
+		let lastWooActionPopupRequest = 0;
+		let pendingClassicCartUpdate = false;
+		let pendingClassicCouponAction = false;
+		let pendingClassicRemoveFromCart = false;
+		const classicCartSelector =
+			'.woocommerce-cart-form, .cart_totals, .et_pb_wc_cart, .et_pb_woo_cart';
+		const couponApplyButtonSelector =
+			'[name="apply_coupon"], button[name="apply_coupon"]';
+		const couponApplyFormSelector = 'form.checkout_coupon, .checkout_coupon';
+		const couponRemoveSelector =
+			'.woocommerce-remove-coupon, a[href*="remove_coupon"], [data-coupon]';
+		const removeFromCartSelector =
+			'.remove_from_cart_button, .product-remove a.remove, a[href*="remove_item"], a[href*="remove-item"], a[href*="remove_from_cart"]';
+
+		const showCartUpdatedPopup = () => {
+			if ( action !== 'cart_updated' ) {
+				return;
+			}
+
+			const now = Date.now();
+			if ( now - lastCartUpdatePopupRequest < 2000 ) {
+				return;
+			}
+			lastCartUpdatePopupRequest = now;
+
+			clearTimeout( cartUpdateTimer );
+			cartUpdateTimer = setTimeout( () => {
+				pendingClassicCartUpdate = false;
+				this.show();
+			}, 100 );
+		};
+
+		const showWooActionPopup = ( expectedAction ) => {
+			if ( action !== expectedAction ) {
+				return;
+			}
+
+			const now = Date.now();
+			if ( now - lastWooActionPopupRequest < 1500 ) {
+				return;
+			}
+			lastWooActionPopupRequest = now;
+
+			clearTimeout( wooActionTimer );
+			wooActionTimer = setTimeout( () => {
+				pendingClassicCouponAction = false;
+				pendingClassicRemoveFromCart = false;
+				this.show();
+			}, 100 );
+		};
+
+		if (
+			typeof window.wp !== 'undefined' &&
+			window.wp?.data &&
+			window.wc?.wcBlocksData?.cartStore
+		) {
+			window.wp.data.subscribe( () => {
+				const selector = window.wp.data.select(
+					window.wc.wcBlocksData.cartStore
+				);
+
+				if ( ! selector || typeof selector.getCartData !== 'function' ) {
+					return;
+				}
+
+				if (
+					action === 'coupon_applied' &&
+					typeof selector.isApplyingCoupon === 'function'
+				) {
+					if ( selector.isApplyingCoupon() ) {
+						couponBeingApplied = true;
+					} else if ( couponBeingApplied ) {
+						couponBeingApplied = false;
+						showWooActionPopup( 'coupon_applied' );
+					}
+				}
+
+				if (
+					action === 'coupon_removed' &&
+					typeof selector.isRemovingCoupon === 'function'
+				) {
+					if ( selector.isRemovingCoupon() ) {
+						couponBeingRemoved = true;
+					} else if ( couponBeingRemoved ) {
+						couponBeingRemoved = false;
+						showWooActionPopup( 'coupon_removed' );
+					}
+				}
+
+				const currentCartData = selector.getCartData() || {};
+				const currentItems = Array.isArray( currentCartData.items )
+					? currentCartData.items
+					: [];
+
+				if ( action === 'removed_from_cart' ) {
+					const currentItemKeys = currentItems.map(
+						( item ) => item.key
+					);
+					if ( previousItems !== null ) {
+						const removedItemKey = previousItems.find(
+							( key ) => ! currentItemKeys.includes( key )
+						);
+						if ( removedItemKey ) {
+							showWooActionPopup( 'removed_from_cart' );
+						}
+					}
+					previousItems = currentItemKeys;
+				}
+
+				if ( action === 'cart_updated' ) {
+					if ( previousCartData !== null ) {
+						const previousItemsData = Array.isArray(
+							previousCartData.items
+						)
+							? previousCartData.items
+							: [];
+						const previousCoupons = Array.isArray(
+							previousCartData.coupons
+						)
+							? previousCartData.coupons
+							: [];
+						const currentCoupons = Array.isArray(
+							currentCartData.coupons
+						)
+							? currentCartData.coupons
+							: [];
+						const hasChanged =
+							JSON.stringify( currentItems ) !==
+								JSON.stringify( previousItemsData ) ||
+							currentCartData.totals?.total_items !==
+								previousCartData.totals?.total_items ||
+							currentCoupons.length !== previousCoupons.length;
+
+						if ( hasChanged ) {
+							showCartUpdatedPopup();
+						}
+					}
+					previousCartData = {
+						...currentCartData,
+						items: [ ...currentItems ],
+						coupons: Array.isArray( currentCartData.coupons )
+							? [ ...currentCartData.coupons ]
+							: [],
+					};
+				}
+			} );
+		}
+
+		if ( action === 'removed_from_cart' ) {
+			if ( typeof window.jQuery !== 'undefined' ) {
+				window.jQuery( document.body ).on(
+					'removed_from_cart',
+					() => showWooActionPopup( 'removed_from_cart' )
+				);
+			}
+
+			const markPendingClassicRemoveFromCart = ( event ) => {
+				const target = event.target;
+				if ( ! target || typeof target.closest !== 'function' ) {
+					return;
+				}
+
+				if ( target.closest( '.dsm-popup-modal, .dsm-popup' ) ) {
+					return;
+				}
+
+				if ( target.closest( removeFromCartSelector ) ) {
+					pendingClassicRemoveFromCart = true;
+				}
+			};
+
+			document.body.addEventListener(
+				'click',
+				markPendingClassicRemoveFromCart,
+				true
+			);
+
+			if ( typeof window.MutationObserver !== 'undefined' ) {
+				const observer = new MutationObserver( ( mutations ) => {
+					if ( ! pendingClassicRemoveFromCart ) {
+						return;
+					}
+
+					const cartChanged = mutations.some( ( mutation ) => {
+						const target = mutation.target;
+						if (
+							target?.closest?.( classicCartSelector ) ||
+							target?.closest?.( '.woocommerce-notices-wrapper' )
+						) {
+							return true;
+						}
+
+						return Array.from( mutation.addedNodes || [] ).some(
+							( node ) =>
+								node.nodeType === 1 &&
+								( node.matches?.( classicCartSelector ) ||
+									node.closest?.( classicCartSelector ) ||
+									node.matches?.( '.woocommerce-message' ) ||
+									node.matches?.( '.woocommerce-error' ) ||
+									node.closest?.(
+										'.woocommerce-notices-wrapper'
+									) )
+						);
+					} );
+
+					if ( cartChanged ) {
+						pendingClassicRemoveFromCart = false;
+						showWooActionPopup( 'removed_from_cart' );
+					}
+				} );
+
+				observer.observe( document.body, {
+					childList: true,
+					subtree: true,
+					characterData: true,
+				} );
+			}
+		}
+
+		if ( action === 'cart_updated' ) {
+			const cartUpdateEvents = [
+				'updated_wc_div',
+				'updated_cart_totals',
+				'wc_fragments_refreshed',
+			];
+
+			const handleClassicCartUpdated = ( event ) => {
+				if (
+					event?.type === 'wc_fragments_refreshed' &&
+					! pendingClassicCartUpdate
+				) {
+					return;
+				}
+
+				showCartUpdatedPopup();
+			};
+
+			if ( typeof window.jQuery !== 'undefined' ) {
+				window.jQuery( document.body ).on(
+					cartUpdateEvents.join( ' ' ),
+					handleClassicCartUpdated
+				);
+			}
+
+			const markPendingClassicCartUpdate = ( event ) => {
+				const target = event.target;
+				if ( ! target || typeof target.closest !== 'function' ) {
+					return;
+				}
+
+				if ( target.closest( '.dsm-popup-modal, .dsm-popup' ) ) {
+					return;
+				}
+
+				if ( target.closest( classicCartSelector ) ) {
+					pendingClassicCartUpdate = true;
+				}
+			};
+
+			document.body.addEventListener(
+				'submit',
+				markPendingClassicCartUpdate,
+				true
+			);
+			document.body.addEventListener(
+				'change',
+				markPendingClassicCartUpdate,
+				true
+			);
+			document.body.addEventListener(
+				'click',
+				markPendingClassicCartUpdate,
+				true
+			);
+
+			if ( typeof window.MutationObserver !== 'undefined' ) {
+				const observer = new MutationObserver( ( mutations ) => {
+					if ( ! pendingClassicCartUpdate ) {
+						return;
+					}
+
+					const cartChanged = mutations.some( ( mutation ) => {
+						const target = mutation.target;
+						if ( target?.closest?.( classicCartSelector ) ) {
+							return true;
+						}
+
+						return Array.from( mutation.addedNodes || [] ).some(
+							( node ) =>
+								node.nodeType === 1 &&
+								( node.matches?.( classicCartSelector ) ||
+									node.closest?.( classicCartSelector ) )
+						);
+					} );
+
+					if ( cartChanged ) {
+						showCartUpdatedPopup();
+					}
+				} );
+
+				observer.observe( document.body, {
+					childList: true,
+					subtree: true,
+					characterData: true,
+				} );
+			}
+		}
+
+		if ( action === 'coupon_applied' || action === 'coupon_removed' ) {
+			if ( typeof window.jQuery !== 'undefined' ) {
+				window.jQuery( document.body ).on(
+					'applied_coupon applied_coupon_in_checkout',
+					() => showWooActionPopup( 'coupon_applied' )
+				);
+				window.jQuery( document.body ).on(
+					'removed_coupon removed_coupon_in_checkout',
+					() => showWooActionPopup( 'coupon_removed' )
+				);
+			}
+
+			const markPendingClassicCouponAction = ( event ) => {
+				const target = event.target;
+				if ( ! target || typeof target.closest !== 'function' ) {
+					return;
+				}
+
+				if ( target.closest( '.dsm-popup-modal, .dsm-popup' ) ) {
+					return;
+				}
+
+				if (
+					action === 'coupon_applied' &&
+					( target.closest( couponApplyButtonSelector ) ||
+						( event.type === 'submit' &&
+							target.closest( couponApplyFormSelector ) ) )
+				) {
+					pendingClassicCouponAction = true;
+				}
+
+				if (
+					action === 'coupon_removed' &&
+					target.closest( couponRemoveSelector )
+				) {
+					pendingClassicCouponAction = true;
+				}
+			};
+
+			document.body.addEventListener(
+				'submit',
+				markPendingClassicCouponAction,
+				true
+			);
+			document.body.addEventListener(
+				'click',
+				markPendingClassicCouponAction,
+				true
+			);
+
+			if ( typeof window.MutationObserver !== 'undefined' ) {
+				const observer = new MutationObserver( ( mutations ) => {
+					if ( ! pendingClassicCouponAction ) {
+						return;
+					}
+
+					const couponAreaChanged = mutations.some( ( mutation ) => {
+						const target = mutation.target;
+						if (
+							target?.closest?.( classicCartSelector ) ||
+							target?.closest?.( '.woocommerce-notices-wrapper' )
+						) {
+							return true;
+						}
+
+						return Array.from( mutation.addedNodes || [] ).some(
+							( node ) =>
+								node.nodeType === 1 &&
+								( node.matches?.( classicCartSelector ) ||
+									node.closest?.( classicCartSelector ) ||
+									node.matches?.( '.woocommerce-message' ) ||
+									node.matches?.( '.woocommerce-error' ) ||
+									node.closest?.(
+										'.woocommerce-notices-wrapper'
+									) )
+						);
+					} );
+
+					if ( couponAreaChanged ) {
+						showWooActionPopup( action );
+					}
+				} );
+
+				observer.observe( document.body, {
+					childList: true,
+					subtree: true,
+					characterData: true,
+				} );
+			}
+		}
+
+		if ( action === 'added_to_cart' ) {
+			document.body.addEventListener( 'wc-blocks_added_to_cart', () =>
+				this.show()
+			);
+
+			const addToCartButtons = document.body.querySelectorAll(
+				'.add_to_cart_button'
+			);
+			addToCartButtons.forEach( ( btn ) => {
+				btn.addEventListener( 'click', () => {
+					this.show();
+				} );
+			} );
+
+			const singleAddToCartButtons = document.body.querySelectorAll(
+				'.single_add_to_cart_button'
+			);
+			singleAddToCartButtons.forEach( ( btn ) => {
+				btn.classList.add( 'add_to_cart_button' );
+				btn.classList.add( 'ajax_add_to_cart' );
+				btn.dataset.product_id = btn.value;
+				btn.addEventListener( 'click', () => {
+					this.show();
+				} );
+			} );
+		}
+	}
+
+	/**
+	 * Milliseconds from `popup_open_delay` (seconds, max 600). 0 when invalid or absent.
+	 *
+	 * @return {number}
+	 */
+	getPopupOpenDelayMs() {
+		const raw = String( this.getParam( 'popup_open_delay', '0s' ) ?? '0s' );
+		const num = parseFloat( raw.replace( /[^\d.-]/g, '' ) );
+		if ( ! Number.isFinite( num ) || num <= 0 ) {
+			return 0;
+		}
+		return Math.round( Math.min( num, 600 ) * 1000 );
+	}
+
+	/**
+	 * Whether this popup reached its configured open quota (excluding VB preview).
+	 *
+	 * @return {boolean}
+	 */
+	hasReachedOpenQuotaLimit() {
+		const popupId = this.getParam( 'popup_id' );
+		if ( ! popupId ) {
+			return false;
+		}
+		const frequency = dsmPopupResolveOpenFrequency( this.config );
+		if ( frequency === 'unlimited' ) {
+			return false;
+		}
+		const rawMax = this.config.popup_max_opens_per_session;
+		const max =
+			rawMax === undefined || rawMax === null || rawMax === ''
+				? 0
+				: parseInt( String( rawMax ), 10 );
+		if ( ! Number.isFinite( max ) || max <= 0 ) {
+			return false;
+		}
+		return dsmPopupGetOpenQuotaCount( popupId, frequency ) >= max;
+	}
+
+	/**
+	 * Open Magnific Popup (runs after optional open delay).
+	 *
+	 * @param {{ immediate?: boolean }} options `immediate: true` skips **Open delay** (Visual Builder preview).
+	 * @return {void}
+	 */
+	show( options = {} ) {
+		const immediate =
+			options &&
+			typeof options === 'object' &&
+			options.immediate === true;
+
+		this.skipPopupOpenQuotaAccounting = immediate;
+
+		if ( ! immediate && this.hasReachedOpenQuotaLimit() ) {
+			return;
+		}
+
+		const delayMs = immediate ? 0 : this.getPopupOpenDelayMs();
+
+		if ( this.openDelayTimer ) {
+			window.clearTimeout( this.openDelayTimer );
+			this.openDelayTimer = null;
+		}
+
+		if ( delayMs <= 0 ) {
+			this.openMagnificPopup();
+			return;
+		}
+
+		this.openDelayTimer = window.setTimeout( () => {
+			this.openDelayTimer = null;
+			this.openMagnificPopup();
+		}, delayMs );
+	}
+
+	/**
+	 * Open Magnific Popup immediately (no open-delay scheduling).
+	 *
+	 * @return {void}
+	 */
+	openMagnificPopup() {
+		const { $ } = this;
+		const enterAnimation =
+			this.config.entrance_animation ??
+			this.config.enterance_animation ??
+			'fadeIn';
+		const exitAnimation = this.getParam( 'exit_animation' );
+		const closePopupTriggers =
+			dsmNormalizeClosePopupTriggers( this.config );
+		const popupClass = this.getParam( 'popup_class' );
+		const autoClosePopup = this.getParam( 'auto_close_popup' );
+		const autoClosePopupDelay = this.getParam( 'auto_close_popup_delay' );
+		const popupId = this.getParam( 'popup_id' );
+		const positionType = dsmPopupResolvePositionType( this.config );
+		const showOverlay = dsmPopupShowOverlay( this.config );
+		const fixedContentPos = dsmPopupMagnificFixedContentPos( positionType );
+
+		if (
+			$.magnificPopup?.instance?.isOpen &&
+			$.magnificPopup.instance.currItem?.src === this.container
+		) {
+			return;
+		}
+
+		const PopupPrependTo = dsmPopupResolveMagnificPrependTarget();
+
+		$.magnificPopup.open( {
+			items: {
+				src: this.container,
+				type: 'inline',
+			},
+			mainClass: `dsm-popup-modal dsm-popup-${ popupId }`,
+			fixedContentPos,
+			closeOnBgClick:
+				showOverlay &&
+				positionType !== 'fixed' &&
+				closePopupTriggers.includes( 'overlay_click' ),
+			enableEscapeKey: closePopupTriggers.includes( 'esc_key' ),
+			closeBtnInside: false,
+			showCloseBtn: false,
+			tClose: '',
+			removalDelay: dsmPopupGetExitRemovalDelayMs( this.config ),
+			prependTo: PopupPrependTo,
+			callbacks: {
+				open: () => {
+					dsmPopupApplyPositionTypeClasses(
+						positionType,
+						showOverlay
+					);
+					// Magnific `fixedContentPos:true` (absolute) already locks scroll via overflow on <html>.
+					// Extra `body { position: fixed }` breaks click / text selection inside the popup.
+					if (
+						! fixedContentPos &&
+						dsmPopupShouldLockBackgroundScroll( positionType ) &&
+						showOverlay
+					) {
+						dsmPopupLockBackgroundScroll();
+					}
+					if ( ! showOverlay ) {
+						dsmPopupApplyNoOverlayMode();
+					}
+					if ( closePopupTriggers.includes( 'overlay_click' ) ) {
+						dsmPopupBindOutsideClickClose();
+					}
+					this.handlePopupOpen(
+						enterAnimation,
+						exitAnimation,
+						closePopupTriggers,
+						popupClass,
+						autoClosePopup,
+						autoClosePopupDelay
+					);
+				},
+				beforeClose: () =>
+					this.handlePopupBeforeClose(
+						enterAnimation,
+						exitAnimation
+					),
+				afterClose: () => {
+					dsmPopupUnbindOutsideClickClose();
+					dsmPopupUnlockBackgroundScroll();
+					dsmPopupClearPositionTypeClasses();
+					dsmPopupClearNoOverlayMode();
+					this.handlePopupAfterClose( enterAnimation, exitAnimation );
+				},
+			},
+		} );
+	}
+
+	/**
+	 * Handle popup open event.
+	 *
+	 * @param {string} enterAnimation The entrance animation class.
+	 * @param {string} exitAnimation The exit animation class.
+	 * @param {string[]} closePopupTriggers Enabled close-trigger slugs.
+	 * @param {string} popupClass The custom popup class.
+	 * @param {string} autoClosePopup Whether to auto close.
+	 * @param {number|string} autoClosePopupDelay Auto close delay in seconds (`20`, `20s`, etc.).
+	 */
+	handlePopupOpen(
+		enterAnimation,
+		exitAnimation,
+		closePopupTriggers,
+		popupClass,
+		autoClosePopup,
+		autoClosePopupDelay
+	) {
+		const { $ } = this;
+		const $content = $( '.mfp-content' );
+		const popupId = this.getParam( 'popup_id' );
+		const popupAppear = this.getParam( 'popup_appear' );
+
+		if ( ! this.skipPopupOpenQuotaAccounting && popupId ) {
+			const frequency = dsmPopupResolveOpenFrequency( this.config );
+			if ( frequency !== 'unlimited' ) {
+				dsmPopupIncrementOpenQuota( popupId, frequency );
+			}
+		}
+		this.skipPopupOpenQuotaAccounting = false;
+
+		// Clear any existing timer
+		if ( this.reopenTimer ) {
+			clearTimeout( this.reopenTimer );
+			this.reopenTimer = null;
+		}
+
+		// Set timer to reopen popup after wait time
+		if ( popupAppear === 'after_x_hours' ) {
+			const waitTime =
+				this.getParam( 'popup_appear_after_x_hours' ) * 60 * 60 * 1000;
+			this.reopenTimer = setTimeout( () => {
+				this.show();
+			}, waitTime );
+		}
+
+		// Add custom close button
+		this.addCloseButton( closePopupTriggers, popupClass );
+
+		// Auto close popup if enabled
+		if ( autoClosePopup ) {
+			let delaySec = dsmPopupParseSecondsScalar( autoClosePopupDelay );
+			if ( delaySec <= 0 ) {
+				delaySec = 20;
+			}
+			window.setTimeout(
+				() => {
+					if ( $.magnificPopup.instance.isOpen ) {
+						$.magnificPopup.close();
+					}
+				},
+				Math.round( delaySec * 1000 )
+			);
+		}
+
+		const $popup = $( this.container );
+		$popup.removeClass( 'animated' );
+		$popup.removeClass( enterAnimation );
+		$popup.removeClass( exitAnimation );
+
+		if ( ! $popup.length || ! $popup.get( 0 ) ) {
+			return;
+		}
+
+		// Force a reflow to ensure the class removal is processed
+		void $popup.get( 0 ).offsetHeight;
+
+		// Add entrance animation classes
+		$popup.addClass( 'animated' );
+		dsmPopupApplyAnimateTiming( $popup, 'in', this.config );
+		$popup.addClass( enterAnimation );
+
+		const skipEtPbGlobals = dsmPopupShouldSkipGlobalEtPbInitModules();
+
+		// Library HTML is server-rendered with DiviLibraryLayoutRenderer; many Divi scripts
+		// skip or mis-measure modules while the popup is hidden. Re-init after open.
+		window.requestAnimationFrame( () => {
+			if ( typeof jQuery === 'undefined' ) {
+				return;
+			}
+			const $win = jQuery( window );
+			if ( ! skipEtPbGlobals ) {
+				$win.trigger( 'et_pb_init_modules' );
+			}
+			if ( typeof window.et_reinit_waypoint_modules === 'function' ) {
+				window.et_reinit_waypoint_modules();
+			}
+			if ( typeof window.et_pb_reinit_waypoint_modules === 'function' ) {
+				window.et_pb_reinit_waypoint_modules();
+			}
+			$win.trigger( 'resize' );
+		} );
+	}
+
+	/**
+	 * Add close button to popup.
+	 *
+	 * @param {string[]} closePopupTriggers Enabled close-trigger slugs.
+	 * @param {string} popupClass The custom popup class.
+	 */
+	addCloseButton( closePopupTriggers, popupClass ) {
+		const { $ } = this;
+		const hideCloseButton = this.getParam( 'hide_close_button' );
+		const $wrapper = $( this.container ).children( '.dsm-popup-wrapper' );
+		const $target = $wrapper.length ? $wrapper : $( this.container );
+
+		$target
+			.children( '.mfp-close.dsm-custom-close' )
+			.off( 'click.dsmPopupCloseButton' )
+			.remove();
+
+		if ( hideCloseButton ) {
+			return;
+		}
+
+		const $close = $(
+			'<div class="mfp-close dsm-custom-close dsm-popup-close-icon"></div>'
+		);
+		$target.prepend( $close );
+
+		$close.on( 'click.dsmPopupCloseButton', () => {
+			if ( closePopupTriggers.includes( 'close_button' ) ) {
+				$.magnificPopup.close();
+			}
+		} );
+
+		if ( closePopupTriggers.includes( 'css_class' ) && popupClass ) {
+			$( '.mfp-content .dsm-popup' )
+				.find( `.${ popupClass }` )
+				.off( 'click.dsmPopupCssClassClose' )
+				.on( 'click.dsmPopupCssClassClose', ( e ) => {
+					e.preventDefault();
+					$.magnificPopup.close();
+				} );
+		}
+	}
+
+	/**
+	 * Handle popup before close event.
+	 *
+	 * @param {string} enterAnimation The entrance animation class.
+	 * @param {string} exitAnimation The exit animation class.
+	 */
+	handlePopupBeforeClose( enterAnimation, exitAnimation ) {
+		const { $ } = this;
+		const popupId = this.getParam( 'popup_id' );
+
+		// Save close time in localStorage
+		const closeTime = Date.now().toString();
+		const storageKey = `dsm_popup_${ popupId }_last_close`;
+		localStorage.setItem( storageKey, closeTime );
+
+		// Only apply exit animation if popup is actually closing
+		const $popup = $( this.container );
+		if ( $popup.length && $.magnificPopup.instance.isOpen ) {
+			// Remove all animation classes first
+			$popup.removeClass( 'animated' );
+			$popup.removeClass( enterAnimation );
+			$popup.removeClass( exitAnimation );
+
+			// Force a reflow to ensure the class removal is processed
+			void $popup.get( 0 ).offsetHeight;
+
+			// Add exit animation classes + out-phase timing
+			$popup.addClass( 'animated' );
+			dsmPopupApplyAnimateTiming( $popup, 'out', this.config );
+			$popup.addClass( exitAnimation );
+
+			// Keep Magnific teardown aligned with configured out timing.
+			const removalMs = dsmPopupGetExitRemovalDelayMs( this.config );
+			if (
+				$.magnificPopup.instance &&
+				typeof $.magnificPopup.instance.st !== 'undefined'
+			) {
+				$.magnificPopup.instance.st.removalDelay = removalMs;
+			}
+		}
+	}
+
+	/**
+	 * Handle popup after close event.
+	 *
+	 * @param {string} enterAnimation The entrance animation class.
+	 * @param {string} exitAnimation The exit animation class.
+	 */
+	handlePopupAfterClose( enterAnimation, exitAnimation ) {
+		const { $ } = this;
+		const $popup = $( this.container );
+
+		// Clean up ALL animation classes and styles
+		$popup.removeClass( 'animated' );
+		$popup.removeClass( enterAnimation );
+		$popup.removeClass( exitAnimation );
+		dsmPopupClearAnimateTiming( $popup );
+		$popup
+			.find( '.mfp-close.dsm-custom-close' )
+			.off( 'click.dsmPopupCloseButton' )
+			.remove();
+		$( '.mfp-bg' ).removeAttr( 'style' );
+		$( '.mfp-wrap' ).removeAttr( 'style' );
+	}
+
+	/**
+	 * Initialize the module popup.
+	 */
+	initModulePopup() {
+		const { $ } = this;
+		const openPopupTrigger = this.getParam( 'open_popup_trigger' );
+		const popupTarget = this.getParam( 'popup_target' );
+		const popupTargetByClass = this.getParam( 'popup_target_by_class' );
+		const popupTargetById = this.getParam( 'popup_target_by_id' );
+		const popupViewportDelay = this.getParam(
+			'popup_viewport_delay',
+			'0s'
+		);
+
+		// Setup triggers based on target type
+		const setupTriggers = ( targetElement ) => {
+			switch ( openPopupTrigger ) {
+				case 'click':
+					targetElement.on( 'click', ( e ) => {
+						e.preventDefault();
+						this.show();
+					} );
+					break;
+
+				case 'hover':
+					targetElement.on( 'mouseenter', () => {
+						this.show();
+					} );
+					break;
+
+				case 'enter_viewport':
+					const enterObserver = new IntersectionObserver(
+						( entries ) => {
+							entries.forEach( ( entry ) => {
+								if ( entry.isIntersecting ) {
+									setTimeout(
+										() => {
+											this.show();
+											enterObserver.disconnect();
+										},
+										parseInt( popupViewportDelay ) * 1000
+									);
+								}
+							} );
+						}
+					);
+					enterObserver.observe( targetElement[ 0 ] );
+					break;
+
+				case 'leave_viewport':
+					let hasBeenInViewport = false;
+					const leaveObserver = new IntersectionObserver(
+						( entries ) => {
+							entries.forEach( ( entry ) => {
+								if ( entry.isIntersecting ) {
+									hasBeenInViewport = true;
+								} else if ( hasBeenInViewport ) {
+									setTimeout(
+										() => {
+											this.show();
+											leaveObserver.disconnect();
+										},
+										parseInt( popupViewportDelay ) * 1000
+									);
+								}
+							} );
+						}
+					);
+					leaveObserver.observe( targetElement[ 0 ] );
+					break;
+			}
+		};
+
+		// Always setup triggers on root element first
+		const $root = $( this.root );
+		dsmPopupAddPointerCursor( $root, openPopupTrigger );
+		setupTriggers( $root );
+
+		// Then handle additional targets if specified
+		if ( popupTarget === 'target_by_class' && popupTargetByClass ) {
+			const targetElements = $( `.${ popupTargetByClass }` );
+			if ( targetElements.length > 0 ) {
+				targetElements.each( ( _, element ) => {
+					const $t = $( element );
+					dsmPopupAddPointerCursor( $t, openPopupTrigger );
+					setupTriggers( $t );
+				} );
+			}
+		} else if ( popupTarget === 'target_by_id' && popupTargetById ) {
+			const targetElement = $( `#${ popupTargetById }` );
+			if ( targetElement.length > 0 ) {
+				dsmPopupAddPointerCursor(
+					targetElement,
+					openPopupTrigger
+				);
+				setupTriggers( targetElement );
+			}
+		}
+	}
+
+	/**
+	 * Initialize the page load popup.
+	 */
+	initPageLoadPopup() {
+		const popupAppear = this.getParam( 'popup_appear' );
+		const popupId = this.getParam( 'popup_id' );
+		const popupAppearAfterXHours = this.getParam(
+			'popup_appear_after_x_hours'
+		);
+		const popupAppearAfterXDays = this.getParam(
+			'popup_appear_after_x_days'
+		);
+
+		if (
+			this.shouldShowPopup(
+				popupId,
+				popupAppear,
+				popupAppearAfterXHours,
+				popupAppearAfterXDays
+			)
+		) {
+			setTimeout( () => this.show(), 100 );
+		}
+	}
+
+	/**
+	 * Initialize the exit intent popup.
+	 */
+	initExitIntentPopup() {
+		const popupAppear = this.getParam( 'popup_appear' );
+		const popupId = this.getParam( 'popup_id' );
+		const popupAppearAfterXHours = this.getParam(
+			'popup_appear_after_x_hours'
+		);
+		let exitIntentTriggered = false;
+
+		document.addEventListener( 'mouseout', ( e ) => {
+			if (
+				! exitIntentTriggered &&
+				e.clientY <= 0 &&
+				this.shouldShowPopup(
+					popupId,
+					popupAppear,
+					popupAppearAfterXHours
+				)
+			) {
+				exitIntentTriggered = true;
+				this.show();
+			}
+		} );
+	}
+
+	/**
+	 * Initialize popup triggered by class selector.
+	 */
+	initTargetByClassPopup() {
+		const { $ } = this;
+		const popupTargetByClass = this.getParam( 'popup_target_by_class' );
+		const openPopupTrigger = this.getParam( 'open_popup_trigger' );
+		const popupViewportDelay = this.getParam(
+			'popup_viewport_delay',
+			'0s'
+		);
+
+		if ( ! popupTargetByClass ) {
+			return;
+		}
+
+		const targetElements = $( `.${ popupTargetByClass }` );
+
+		if ( targetElements.length === 0 ) {
+			return;
+		}
+
+		// Setup triggers based on target type
+		const setupTriggers = ( targetElement ) => {
+			switch ( openPopupTrigger ) {
+				case 'click':
+					targetElement.on( 'click', ( e ) => {
+						e.preventDefault();
+						this.show();
+					} );
+					break;
+
+				case 'hover':
+					targetElement.on( 'mouseenter', () => {
+						this.show();
+					} );
+					break;
+
+				case 'enter_viewport':
+					const enterObserver = new IntersectionObserver(
+						( entries ) => {
+							entries.forEach( ( entry ) => {
+								if ( entry.isIntersecting ) {
+									setTimeout(
+										() => {
+											this.show();
+											enterObserver.disconnect();
+										},
+										parseInt( popupViewportDelay ) * 1000
+									);
+								}
+							} );
+						}
+					);
+					enterObserver.observe( targetElement[ 0 ] );
+					break;
+
+				case 'leave_viewport':
+					let hasBeenInViewport = false;
+					const leaveObserver = new IntersectionObserver(
+						( entries ) => {
+							entries.forEach( ( entry ) => {
+								if ( entry.isIntersecting ) {
+									hasBeenInViewport = true;
+								} else if ( hasBeenInViewport ) {
+									setTimeout(
+										() => {
+											this.show();
+											leaveObserver.disconnect();
+										},
+										parseInt( popupViewportDelay ) * 1000
+									);
+								}
+							} );
+						}
+					);
+					leaveObserver.observe( targetElement[ 0 ] );
+					break;
+			}
+		};
+
+		// Setup triggers for each matching element
+		targetElements.each( ( _, element ) => {
+			const $t = $( element );
+			dsmPopupAddPointerCursor( $t, openPopupTrigger );
+			setupTriggers( $t );
+		} );
+	}
+
+	/**
+	 * Initialize popup triggered by ID selector.
+	 */
+	initTargetByIdPopup() {
+		const { $ } = this;
+		const popupTargetById = this.getParam( 'popup_target_by_id' );
+		const openPopupTrigger = this.getParam( 'open_popup_trigger' );
+		const popupViewportDelay = this.getParam(
+			'popup_viewport_delay',
+			'0s'
+		);
+
+		if ( ! popupTargetById ) {
+			return;
+		}
+
+		const targetElement = $( `#${ popupTargetById }` );
+		if ( targetElement.length === 0 ) {
+			return;
+		}
+
+		dsmPopupAddPointerCursor( targetElement, openPopupTrigger );
+
+		// Setup triggers based on target type
+		switch ( openPopupTrigger ) {
+			case 'click':
+				targetElement.on( 'click', ( e ) => {
+					e.preventDefault();
+					this.show();
+				} );
+				break;
+
+			case 'hover':
+				targetElement.on( 'mouseenter', () => {
+					this.show();
+				} );
+				break;
+
+			case 'enter_viewport':
+				const enterObserver = new IntersectionObserver( ( entries ) => {
+					entries.forEach( ( entry ) => {
+						if ( entry.isIntersecting ) {
+							setTimeout(
+								() => {
+									this.show();
+									enterObserver.disconnect();
+								},
+								parseInt( popupViewportDelay ) * 1000
+							);
+						}
+					} );
+				} );
+				enterObserver.observe( targetElement[ 0 ] );
+				break;
+
+			case 'leave_viewport':
+				let hasBeenInViewport = false;
+				const leaveObserver = new IntersectionObserver( ( entries ) => {
+					entries.forEach( ( entry ) => {
+						if ( entry.isIntersecting ) {
+							hasBeenInViewport = true;
+						} else if ( hasBeenInViewport ) {
+							setTimeout(
+								() => {
+									this.show();
+									leaveObserver.disconnect();
+								},
+								parseInt( popupViewportDelay ) * 1000
+							);
+						}
+					} );
+				} );
+				leaveObserver.observe( targetElement[ 0 ] );
+				break;
+		}
+	}
+}
+
+/**
+ * Visual Builder preview: opens the inline popup with the same Magnific options as frontend `show()`.
+ * Must run in the same window as `#dsm-popup-*` markup and enqueued Magnific.
+ *
+ * @param {HTMLElement} container `.dsm-popup` root (`#dsm-popup-{id}`).
+ * @return {void}
+ */
+window.dsmShowPopupMagnificPreview = function ( container ) {
+	if (
+		typeof jQuery === 'undefined' ||
+		typeof jQuery.fn?.magnificPopup !== 'function'
+	) {
+		if ( typeof console !== 'undefined' && console.warn ) {
+			console.warn(
+				'[DSM Popup] Preview requires Magnific Popup (`magnific-popup` script handle — Divi-bundled).'
+			);
+		}
+		return;
+	}
+
+	if ( ! container || typeof container.closest !== 'function' ) {
+		return;
+	}
+
+	try {
+		const instance = new DSM_Popup( container );
+		instance.show( { immediate: true } );
+	} catch ( err ) {
+		if ( typeof console !== 'undefined' && console.warn ) {
+			console.warn( '[DSM Popup] Preview failed:', err );
+		}
+	}
+};
+
+// Initialize all popups on the page
+const popupContainers = document.querySelectorAll( '.dsm-popup' );
+popupContainers.forEach( ( container ) => {
+	new DSM_Popup( container );
+} );

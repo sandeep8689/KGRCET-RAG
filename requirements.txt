@@ -1,5 +1,6 @@
-requests
-beautifulsoup4
-pypdf
+fastapi
+uvicorn[standard]
 chromadb
 sentence-transformers
+groq
+python-dotenv

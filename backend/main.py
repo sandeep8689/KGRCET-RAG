@@ -25,6 +25,7 @@ app = FastAPI(
 
 # Explicitly allow the deployed frontend and local development.
 DEFAULT_ORIGINS = [
+    "https://kgrcet-o95j9j71k-sandeepbadavath3-5019s-projects.vercel.app",
     "https://kgrcet-rag-git-main-sandeepbadavath3-5019s-projects.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",

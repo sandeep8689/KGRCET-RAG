@@ -53,14 +53,14 @@ app.add_middleware(
 
 class HistoryMessage(BaseModel):
     role: Literal["user", "assistant"]
-    content: str = Field(max_length=1200)
+    content: str = Field(max_length=12000)
 
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=2, max_length=1000)
     history: list[HistoryMessage] = Field(
         default_factory=list,
-        max_length=12,
+        max_length=50,
     )
 
 

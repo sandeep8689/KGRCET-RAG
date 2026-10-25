@@ -118,7 +118,7 @@ function App() {
           // Send recent turns from this conversation so the backend can resolve
           // follow-up questions such as "what is his qualification?"
           history: (conversations.find((chat) => chat.id === chatId)?.messages || [])
-            .slice(-8)
+            .slice(-50)
             .map((message) => ({
               role: message.role,
               content: message.content,
